@@ -11,14 +11,23 @@ public class Task {
     private Category category;
     private Priority priority;
 
-    public Task( String name, String description, Date dateCreation, Category category, Priority priority) {
-
+    public Task(int id, String name, String description, Date dateCreation, Category category, Priority priority) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.dateCreation = dateCreation;
         this.category = category;
         this.priority = priority;
     }
+    public Task(String name, String description, Category category, Priority priority) {
+
+        this.name = name;
+        this.description = description;
+        this.category = category;
+        this.priority = priority;
+
+    }
+
 
     public Task() {
     }

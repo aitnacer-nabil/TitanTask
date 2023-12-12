@@ -7,7 +7,7 @@ import org.titans.entities.Task;
 import java.util.List;
 
 public interface TaskDAO {
-    Task addTask(Task task);
+    void addTask(Task task);
     Task updateTask(Task t,Integer id);
     void deleteTask(Integer id );
     List<Task> getAllTasks();
@@ -15,7 +15,7 @@ public interface TaskDAO {
 
     List<Task> sortByPriority();
     List<Task> sortByCategory();
-    void addPriorityToTask(Priority priority);
+    void addPriorityToTask(int taskId,Priority priority);
     void addCategoryToTask(Category category);
 
     List <Task> filterByCategory(Category category);

@@ -13,6 +13,9 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
-
+        TaskDAOImp taskDAOImp = new TaskDAOImp();
+//    Task task = new Task("Enrigster","Write sql query",null,Priority.HAUTE);
+//    taskDAOImp.addTask(task);
+    taskDAOImp.addPriorityToTask(14,Priority.BASSE);
     }
 }
