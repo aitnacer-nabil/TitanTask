@@ -1,7 +1,16 @@
 package org.titans;
 
+import org.titans.services.TaskDAOImp;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        TaskDAOImp ts=new TaskDAOImp();
+        ts.deleteTask(3);
+        
+        
+        
+        
+
+      
     }
 }
