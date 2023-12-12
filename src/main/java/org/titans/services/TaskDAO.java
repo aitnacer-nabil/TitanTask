@@ -1,5 +1,5 @@
 package org.titans.services;
 
-public interface TaskManager {
+public interface TaskDAO {
 
 }
