@@ -20,6 +20,9 @@ public class Task {
         this.priority = priority;
     }
 
+    public Task() {
+    }
+
     public int getId() {
         return id;
     }

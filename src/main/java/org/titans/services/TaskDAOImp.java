@@ -8,9 +8,8 @@ import org.titans.entities.Priority;
 import org.titans.entities.Task;
 import org.titans.util.ConnectionDB;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 import org.titans.util.ConnectionDB;
 
@@ -88,12 +87,82 @@ public class TaskDAOImp implements TaskDAO {
 
     @Override
     public List<Task> sortByDate() {
-        return null;
+        Connection connexion = ConnectionDB.getConnectionDB();
+        PreparedStatement statement = null; //envoyer des requêtes SQL pré-compilées à une base de données
+        ResultSet resultSet = null; //stocker les résultats d'une requête SQL.
+        List<Task> tasks = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM task LEFT JOIN category ON task.ref_category = category.ref_category ORDER BY date_creation";
+            statement = connexion.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+            while(resultSet.next()){
+                int taskId = resultSet.getInt("id");
+                String taskName = resultSet.getString("name");
+                String taskDesc = resultSet.getString("description");
+                Date taskDate = resultSet.getDate("date_creation");
+                String priority =resultSet.getString("priority");
+                Priority taskPriority = Priority.valueOf(priority.toUpperCase());
+                String categoryName = resultSet.getString("name_category");
+                String categoryRef = resultSet.getString("ref_category");
+
+                Category category = new Category(categoryRef,categoryName);
+
+                Task task = new Task();
+                task.setId(taskId);
+                task.setName(taskName);
+                task.setDateCreation(taskDate);
+                task.setPriority(taskPriority);
+                task.setCategory(category);
+                tasks.add(task);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return tasks;
     }
 
     @Override
     public List<Task> sortByPriority() {
-        return null;
+        Connection connexion = ConnectionDB.getConnectionDB();
+        PreparedStatement statement = null; //envoyer des requêtes SQL pré-compilées à une base de données
+        ResultSet resultSet = null; //stocker les résultats d'une requête SQL.
+        List<Task> tasks = new ArrayList<>();
+        try {
+            String sql = "SELECT * FROM task LEFT JOIN category ON task.ref_category = category.ref_category ORDER BY \n" +
+                    "case priority \n" +
+                    "when \"haute\" then 1\n" +
+                    "when \"moyenne\" then 2\n" +
+                    "when \"basse\" then 3\n" +
+                    "else 4\n" +
+                    "end;";
+            statement = connexion.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+            while(resultSet.next()){
+                int taskId = resultSet.getInt("id");
+                String taskName = resultSet.getString("name");
+                String taskDesc = resultSet.getString("description");
+                Date taskDate = resultSet.getDate("date_creation");
+                String priority =resultSet.getString("priority");
+                Priority taskPriority = Priority.valueOf(priority.toUpperCase());
+                String categoryName = resultSet.getString("name_category");
+                String categoryRef = resultSet.getString("ref_category");
+
+                Category category = new Category(categoryRef,categoryName);
+
+                Task task = new Task();
+                task.setId(taskId);
+                task.setName(taskName);
+                task.setDateCreation(taskDate);
+                task.setPriority(taskPriority);
+                task.setCategory(category);
+                tasks.add(task);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return tasks;
     }
 
     @Override
