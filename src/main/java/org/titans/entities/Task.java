@@ -4,15 +4,15 @@ import java.util.Date;
 import java.util.Locale;
 
 public class Task {
-    private String id ;
+    private int id ;
     private String name;
     private String description;
     private Date dateCreation;
     private Category category;
     private Priority priority;
 
-    public Task(String id, String name, String description, Date dateCreation, Category category, Priority priority) {
-        this.id = id;
+    public Task( String name, String description, Date dateCreation, Category category, Priority priority) {
+
         this.name = name;
         this.description = description;
         this.dateCreation = dateCreation;
@@ -20,7 +20,7 @@ public class Task {
         this.priority = priority;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
@@ -44,7 +44,7 @@ public class Task {
         return priority;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

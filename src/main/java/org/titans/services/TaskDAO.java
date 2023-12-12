@@ -7,7 +7,7 @@ import org.titans.entities.Task;
 import java.util.List;
 
 public interface TaskDAO {
-    Task addTask();
+    Task addTask(Task task);
     Task updateTask(Task t,Integer id);
     void deleteTask(Integer id );
     List<Task> getAllTasks();

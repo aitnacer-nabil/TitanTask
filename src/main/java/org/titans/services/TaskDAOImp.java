@@ -12,7 +12,7 @@ import java.util.List;
 
 public class TaskDAOImp implements TaskDAO {
     @Override
-    public Task addTask() {
+    public Task addTask(Task task) {
         return null;
     }
 
@@ -26,7 +26,7 @@ public class TaskDAOImp implements TaskDAO {
          preparedStatement.setString(2,t.getDescription());
          preparedStatement.setString(3,t.getPriority().name());
          preparedStatement.setString(4,t.getCategory().getId());
-         preparedStatement.setString(5,t.getId());
+         preparedStatement.setInt(5,id);
 
          int i = preparedStatement.executeUpdate();
          if (i == 1){
