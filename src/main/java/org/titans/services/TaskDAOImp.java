@@ -4,9 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.titans.entities.Category;
-import org.titans.entities.Priority;
-import org.titans.entities.Task;
+import org.titans.entities.*;
 import org.titans.util.ConnectionDB;
 
 import java.sql.*;
@@ -17,10 +15,12 @@ import java.util.List;
 import org.titans.util.ConnectionDB;
 
 public class TaskDAOImp implements TaskDAO {
-Connection connection;
+    HistoryActionDaoImp historyActionDaoImp;
+    Connection connection;
 
     public TaskDAOImp() {
         this.connection = ConnectionDB.getConnectionDB();
+        historyActionDaoImp = new HistoryActionDaoImp();
     }
 
     @Override
@@ -29,20 +29,23 @@ Connection connection;
             String query = "INSERT INTO task (name,description,date_creation,priority) VALUES(?,?,?,?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1,task.getName());
-            preparedStatement.setString(2,task.getDescription());
-            preparedStatement.setTimestamp(3,Timestamp.valueOf(LocalDateTime.now()));
-            preparedStatement.setString(4,task.getPriority().name());
+            preparedStatement.setString(1, task.getName());
+            preparedStatement.setString(2, task.getDescription());
+            preparedStatement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
+            preparedStatement.setString(4, task.getPriority().name());
 
             int i = preparedStatement.executeUpdate();
-            if(i == 1){
+            if (i == 1) {
+                TaskHistoryAction taskHistoryAction = historyActionDaoImp.createTaskHiistoryObj(
+                        15,
+                        ActionType.CREATE,
+                        "Nabil"
+                );
+                historyActionDaoImp.insert(taskHistoryAction);
                 System.out.println("Add successfully");
             } else {
                 System.out.println("Not Add successfully");
             }
-
-
-
 
 
         } catch (SQLException e) {
@@ -50,6 +53,8 @@ Connection connection;
         }
 
     }
+
+
 
     @Override
     public Task updateTask(Task t, Integer id) {
@@ -65,6 +70,12 @@ Connection connection;
 
             int i = preparedStatement.executeUpdate();
             if (i == 1) {
+                TaskHistoryAction taskHistoryAction = historyActionDaoImp.createTaskHiistoryObj(
+                        15,
+                        ActionType.UPDATE,
+                        "Nabil"
+                );
+                historyActionDaoImp.insert(taskHistoryAction);
                 return t;
             }
             preparedStatement.close();
@@ -92,6 +103,12 @@ Connection connection;
             int rowAffected = preparedStatement.executeUpdate();
 
             if (rowAffected == 1) {
+                TaskHistoryAction taskHistoryAction = historyActionDaoImp.createTaskHiistoryObj(
+                        15,
+                        ActionType.DELETE,
+                        "Nabil"
+                );
+                historyActionDaoImp.insert(taskHistoryAction);
                 System.out.println("Task deleted successfully");
             } else {
                 System.out.println("Task not Found");
@@ -172,7 +189,8 @@ Connection connection;
     }
 
     @Override
-    public List<Task> sortByPriority() {;
+    public List<Task> sortByPriority() {
+        ;
         Statement statement = null; //envoyer des requêtes SQL pré-compilées à une base de données
         ResultSet resultSet = null; //stocker les résultats d'une requête SQL.
         List<Task> tasks = new ArrayList<>();
@@ -202,16 +220,22 @@ Connection connection;
     }
 
     @Override
-    public void addPriorityToTask(int taskId,Priority priority) {
+    public void addPriorityToTask(int taskId, Priority priority) {
         try {
             String sql = "UPDATE task set priority = ? WHERE id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1,priority.name());
-            preparedStatement.setInt(2,taskId);
-           int i = preparedStatement.executeUpdate();
-            if(i ==1 ){
+            preparedStatement.setString(1, priority.name());
+            preparedStatement.setInt(2, taskId);
+            int i = preparedStatement.executeUpdate();
+            if (i == 1) {
+                TaskHistoryAction taskHistoryAction = historyActionDaoImp.createTaskHiistoryObj(
+                        15,
+                        ActionType.UPDATE,
+                        "Nabil"
+                );
+                historyActionDaoImp.insert(taskHistoryAction);
                 System.out.println("Update successfully");
-            }else {
+            } else {
                 System.out.println("Error ");
             }
 

@@ -16,7 +16,15 @@ create table if not exists task
     priority      ENUM ('haute','basse','moyenne'),
     ref_category  varchar(55) references category (ref)
 );
+create table if not exists task_action_history
+(
+    id            int primary key AUTO_INCREMENT,
+    task_id            int ,
+    action_change enum('CREATE','UPDATE','DELETE'),
+    time_modification TIMESTAMP,
+    user_name      varchar(250)
 
+);
 
 insert into category (ref, name_category) value ('dev', 'development');
 insert into category (ref, name_category) value ('bur', 'excel');
