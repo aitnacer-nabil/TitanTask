@@ -8,17 +8,17 @@ import java.util.List;
 
 public interface TaskDAO {
     void addTask(Task task);
-    Task updateTask(Task t,Integer id);
-    void deleteTask(Integer id );
+    Task updateTask(Task t);
+    void deleteTask(String id ,String userId);
     List<Task> getAllTasks();
-    List<Task> sortByDate();
-
-    List<Task> sortByPriority();
-    List<Task> sortByCategory();
-    void addPriorityToTask(int taskId,Priority priority);
-    void addCategoryToTask(int id,String ref_category);
-
-    List <Task> filterByCategory(String category_name);
+//    List<Task> sortByDate();
+//
+//    List<Task> sortByPriority();
+//    List<Task> sortByCategory();
+//    void addPriorityToTask(int taskId,Priority priority);
+//    void addCategoryToTask(int id,String ref_category);
+//
+//    List <Task> filterByCategory(String category_name);
 
 
 }

@@ -34,11 +34,15 @@ public class Task {
         this.user_id = user_id;
     }
 
-
-
-
-
-
+    public Task(String id, String name, String description, Date dateCreation, Category category, Priority priority, String user_id) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.dateCreation = dateCreation;
+        this.category = category;
+        this.priority = priority;
+        this.user_id = user_id;
+    }
 
     public String getId() {
         return id;

@@ -1,0 +1,64 @@
+
+    // Create lists for each class
+        List<User> userList = new ArrayList<>();
+        List<Category> categoryList = new ArrayList<>();
+        List<Task> taskList = new ArrayList<>();
+        UserDaoImpl userDao =new UserDaoImpl();
+        CategoryDAOImp categoryDAOImp = new CategoryDAOImp();
+        TaskDAOImp taskDAOImp = new TaskDAOImp();
+
+
+//        // Add User objects to the user list
+        userList.add(new User("Ahmed", "ahmed@example.com", "password1", Role.ADMIN));
+        userList.add(new User("Fatima", "fatima@example.com", "password2", Role.USER));
+        userList.add(new User("Mehdi", "mehdi@example.com", "password3", Role.USER));
+        userList.add(new User("Amina", "amina@example.com", "password4", Role.USER));
+        userList.add(new User("Karim", "karim@example.com", "password5", Role.USER));
+        userList.add(new User("Nadia", "nadia@example.com", "password6", Role.USER));
+        userList.add(new User("Hassan", "hassan@example.com", "password7", Role.USER));
+        userList.add(new User("Sara", "sara@example.com", "admin_password", Role.ADMIN));
+        userDao.createUser(new User("YouDa", "sara@example.com", "admin_password", Role.USER));
+//        userDao.deleteUser("a94e4");
+
+//        // Add Category objects to the category list
+        categoryList.add(new Category("Work"));
+        categoryList.add(new Category("Personal"));
+        categoryList.add(new Category("Shopping"));
+        categoryList.add(new Category("Health"));
+        categoryList.add(new Category("Education"));
+        categoryList.add(new Category("Entertainment"));
+            categoryDAOImp.deleteCategory("ae18c");
+
+        // Add Task objects to the task list
+        taskList.add(new Task("Complete Project Report", "Finish the report for the upcoming meeting", Timestamp.valueOf(LocalDateTime.now()), categoryList.get(0), Priority.HAUTE, userList.get(0).getId()));
+        taskList.add(new Task("Gym Session", "Hit the gym for a workout", Timestamp.valueOf(LocalDateTime.now()), categoryList.get(3), Priority.MOYENNE, userList.get(1).getId()));
+        taskList.add(new Task("Buy Groceries", "Purchase items for the week", Timestamp.valueOf(LocalDateTime.now()), categoryList.get(2), Priority.BASSE, userList.get(2).getId()));
+        taskList.add(new Task("Study Java Stream API", "Learn and practice Java Stream API concepts", Timestamp.valueOf(LocalDateTime.now()), categoryList.get(4), Priority.MOYENNE, userList.get(3).getId()));
+        taskList.add(new Task("Movie Night", "Watch a movie with friends", Timestamp.valueOf(LocalDateTime.now()), categoryList.get(5), Priority.BASSE, userList.get(4).getId()));
+        taskList.add(new Task("Prepare Presentation", "Get ready for the upcoming client presentation", Timestamp.valueOf(LocalDateTime.now()), categoryList.get(0), Priority.HAUTE, userList.get(5).getId()));
+        taskList.add(new Task("Read a Book", "Spend some time reading a good book", Timestamp.valueOf(LocalDateTime.now()), categoryList.get(1), Priority.BASSE, userList.get(6).getId()));
+        taskList.add(new Task("Code Review", "Review and provide feedback on team members' code", Timestamp.valueOf(LocalDateTime.now()), categoryList.get(0), Priority.MOYENNE, userList.get(0).getId()));
+        taskList.add(new Task("Cook Dinner", "Prepare a delicious dinner for the family", Timestamp.valueOf(LocalDateTime.now()), categoryList.get(1), Priority.BASSE, userList.get(1).getId()));
+        taskList.add(new Task("Yoga Session", "Practice yoga for relaxation", Timestamp.valueOf(LocalDateTime.now()), categoryList.get(3), Priority.MOYENNE, userList.get(2).getId()));
+        taskList.add(new Task("Online Course", "Enroll in an online course to enhance skills", Timestamp.valueOf(LocalDateTime.now()), categoryList.get(4), Priority.MOYENNE, userList.get(3).getId()));
+        taskList.add(new Task("Plan Weekend Trip", "Organize a short weekend getaway with friends", Timestamp.valueOf(LocalDateTime.now()), categoryList.get(1), Priority.HAUTE, userList.get(4).getId()));
+        taskList.add(new Task("Write Blog Post", "Create a blog post on a relevant topic", Timestamp.valueOf(LocalDateTime.now()), categoryList.get(0), Priority.MOYENNE, userList.get(5).getId()));
+        taskList.add(new Task("Visit Doctor", "Schedule and visit the doctor for a health checkup", Timestamp.valueOf(LocalDateTime.now()), categoryList.get(3), Priority.HAUTE, userList.get(6).getId()));
+        taskList.add(new Task("Movie Marathon", "Have a movie marathon at home", Timestamp.valueOf(LocalDateTime.now()), categoryList.get(5), Priority.BASSE, userList.get(0).getId()));
+
+
+
+        for (User user: userList
+             ) {
+            userDao.createUser(user);
+        }
+
+
+        for (Category category: categoryList
+        ) {
+            categoryDAOImp.addCategory(category);
+        }
+        for (Task task: taskList
+        ) {
+            taskDAOImp.addTask(task);
+        }

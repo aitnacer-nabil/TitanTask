@@ -17,8 +17,10 @@ public class Category {
         this.nom = nom;
     }
 
-
-
+    public Category( String id ,String nom) {
+        this.nom = nom;
+        this.id = id;
+    }
 
     public String getNom() {
         return nom;

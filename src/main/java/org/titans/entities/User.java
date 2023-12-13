@@ -19,7 +19,26 @@ public class User {
    private String password;
    Role role;
 
-   public User( String username, String email, String password, Role role) {
+   @Override
+   public String toString() {
+      return "User{" +
+              "id='" + id + '\'' +
+              ", username='" + username + '\'' +
+              ", email='" + email + '\'' +
+              ", password='" + password + '\'' +
+              ", role=" + role +
+              '}';
+   }
+
+   public User(String id, String username, String email, String password, Role role) {
+      this.id = id;
+      this.username = username;
+      this.email = email;
+      this.password = password;
+      this.role = role;
+   }
+
+   public User(String username, String email, String password, Role role) {
       this.id = Utils.GenerateId();
       this.username = username;
       this.email = email;

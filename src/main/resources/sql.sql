@@ -14,8 +14,8 @@ create table if not exists user
 create table if not exists category
 (
     ref           int primary key auto_increment,
-    id_category varchar(100),
-    name_category varchar(100)
+    id_category varchar(100) not null UNIQUE ,
+    name_category varchar(100) not null UNIQUE
 );
 create table if not exists task
 (
@@ -25,7 +25,7 @@ create table if not exists task
     description   TEXT,
     date_creation TIMESTAMP,
     priority      ENUM ('haute','basse','moyenne'),
-    ref_category  varchar(55) references category (ref),
+    ref_category  varchar(55) references category (id_category) ,
     ref_user      varchar(55) references user (user_id)
 );
 
@@ -36,7 +36,7 @@ create table if not exists task_action_history
     task_id           varchar(55),
     action_change     enum ('CREATE','UPDATE','DELETE'),
     time_modification TIMESTAMP,
-    user_name         varchar(250)
+    user_id         varchar(55) references user (user_id)
 
 );
 
@@ -72,3 +72,6 @@ INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `pr
 INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (2, 'task2', 'Gym Session', 'Hit the gym for a workout', '2023-12-13 21:44:46', 'moyenne', 'eceb1', 'user2');
 INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (10, 'task10', 'Yoga Session', 'Practice yoga for relaxation', '2023-12-13 21:44:46', 'moyenne', 'eceb1', 'user3');
 INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (14, 'task14', 'Visit Doctor', 'Schedule and visit the doctor for a health checkup', '2023-12-13 21:44:46', 'haute', 'eceb1', 'user7');
+SELECT * FROM task LEFT JOIN category ON task.ref_category = category.id_category;
+UPDATE category SET name_category='HEllo' WHERE id_category='ae18c';
+INSERT INTO user (user_id, user_name, user_email, user_role, user_password) VALUES ('cad37', 'Ahmed', 'ahmed@example.com', 'ADMIN', 'password1')

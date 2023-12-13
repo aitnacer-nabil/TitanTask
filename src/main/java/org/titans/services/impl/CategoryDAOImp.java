@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package org.titans.services;
+package org.titans.services.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,11 +13,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.titans.entities.Category;
+import org.titans.services.CategoryDAO;
 import org.titans.util.ConnectionDB;
 
 /**
- *
  * @author hp
  */
 public class CategoryDAOImp implements CategoryDAO {
@@ -33,14 +34,14 @@ public class CategoryDAOImp implements CategoryDAO {
         List<Category> categoryList = new ArrayList<>();
 
         try {
-            String getAllQuery = "SELECT * FROM `category` ";
+            String getAllQuery = "SELECT * FROM category ";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(getAllQuery);
             while (resultSet.next()) {
-                String ref = resultSet.getString("ref");
+                String id_category = resultSet.getString("id_category");
                 String name_category = resultSet.getString("name_category");
 
-                Category category = new Category(ref, name_category);
+                Category category = new Category(id_category, name_category);
                 categoryList.add(category);
 
             }
@@ -55,22 +56,8 @@ public class CategoryDAOImp implements CategoryDAO {
     @Override
     public void addCategory(Category category) {
 
-        String sqlCheckExisist = "SELECT * from category WHERE name_category=?";
-        String sqlInsertt = "INSERT INTO category (ref, name_category) values (?,?)";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(sqlCheckExisist)) {
-            preparedStatement.setString(1, category.getNom());
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    System.out.println("Category already exist");
-                    return;
-                }
 
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(CategoryDAOImp.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        String sqlInsertt = "INSERT INTO category (id_category, name_category) values (?,?)";
         try (PreparedStatement preparedStatement = connection.prepareStatement(sqlInsertt)) {
             preparedStatement.setString(1, category.getId());
             preparedStatement.setString(2, category.getNom());
@@ -85,32 +72,22 @@ public class CategoryDAOImp implements CategoryDAO {
             throw new RuntimeException(e);
         }
 
+
     }
 
+
+
     @Override
-    public Category updateCategory(String ref, Category category) {
+    public Category updateCategory(String id ,Category category) {
+
+
+
         try {
-         String sqlCheckExisist = "SELECT * from category WHERE name_category=?";
-           try (PreparedStatement preparedStatement = connection.prepareStatement(sqlCheckExisist)) {
-            preparedStatement.setString(1, category.getNom());
-            try (ResultSet resultSet = preparedStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    System.out.println("Category you want to update with already exist");
-                    return null;
-                }
-
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(CategoryDAOImp.class.getName()).log(Level.SEVERE, null, ex);
-        }
-
-            String sql = "UPDATE category SET ref=?,name_category=? WHERE ref=?";
+            String sql = "UPDATE category SET name_category=? WHERE id_category=?";
             PreparedStatement preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, category.getId());
-            preparedStatement.setString(2, category.getNom());
-            preparedStatement.setString(3, ref);
+
+            preparedStatement.setString(1, category.getNom());
+            preparedStatement.setString(2, id);
 
             int i = preparedStatement.executeUpdate();
             if (i == 1) {
@@ -126,15 +103,15 @@ public class CategoryDAOImp implements CategoryDAO {
     }
 
     @Override
-    public void deleteCategory(String ref) {
-             String deleteQuery = "DELETE FROM category WHERE ref=?";
+    public void deleteCategory(String id) {
+        String deleteQuery = "DELETE FROM category WHERE id_category=?";
         if (connection == null) {
             System.out.println("Couldn't get connection to the database");
             return;
         }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
-            preparedStatement.setString(1, ref);
+            preparedStatement.setString(1, id);
 
             int rowAffected = preparedStatement.executeUpdate();
 
@@ -148,7 +125,7 @@ public class CategoryDAOImp implements CategoryDAO {
             se.printStackTrace();
 
         }
-        
+
 
     }
 

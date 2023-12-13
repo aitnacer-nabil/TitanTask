@@ -1,15 +1,12 @@
 package org.titans.controllers;
 
-import com.mysql.cj.x.protobuf.MysqlxDatatypes;
 import org.titans.entities.Priority;
 import org.titans.entities.Task;
-import org.titans.services.TaskDAOImp;
+import org.titans.services.impl.TaskDAOImp;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
 import java.util.Scanner;
 import java.util.List;
 
@@ -25,19 +22,7 @@ public class ConsoleController {
 
     public ConsoleController() {
         scanner = new Scanner(System.in);
-        tasks = new ArrayList<>();
-        Task t1 = new Task(1, "task1", "desc", Timestamp.valueOf(LocalDateTime.now()), null, Priority.HAUTE);
-        Task t2 = new Task(2, "task2", "desc", Timestamp.valueOf(LocalDateTime.now()), null, Priority.BASSE);
-        Task t3 = new Task(3, "task3", "desc", Timestamp.valueOf(LocalDateTime.now()), null, Priority.MOYENNE);
-        Task t4 = new Task(4, "task4", "desc", Timestamp.valueOf(LocalDateTime.now()), null, Priority.HAUTE);
-        Task t5 = new Task(5, "task5", "desc", Timestamp.valueOf(LocalDateTime.now()), null, Priority.BASSE);
-        Task t6 = new Task(6, "task6", "desc", Timestamp.valueOf(LocalDateTime.now()), null, Priority.HAUTE);
-        tasks.add(t1);
-        tasks.add(t2);
-        tasks.add(t3);
-        tasks.add(t4);
-        tasks.add(t5);
-        tasks.add(t6);
+
     }
 
     public void addTaskInput() {
@@ -68,15 +53,15 @@ public class ConsoleController {
             default:
                 break;
         }
-
-        Task task = new Task();
-
-        task.setName(name);
-        task.setDescription(description);
-        task.setDateCreation(Timestamp.valueOf(LocalDateTime.now()));
-        task.setPriority(priority);
-        taskDAOImp.addTask(task);
-        System.out.println(task);
+//
+//        Task task = new Task();
+//
+//        task.setName(name);
+//        task.setDescription(description);
+//        task.setDateCreation(Timestamp.valueOf(LocalDateTime.now()));
+//        task.setPriority(priority);
+//        taskDAOImp.addTask(task);
+//        System.out.println(task);
     }
 
     public void getAllTasksInput() {
@@ -92,18 +77,18 @@ public class ConsoleController {
 
     public void sortByDateInput() {
         List<Task> taskList;
-        taskList = taskDAOImp.sortByDate();
+//        taskList = taskDAOImp.sortByDate();
         System.out.println("** list of tasks sorted by date **");
 
-        for (Task t : taskList
-        ) {
-            System.out.println(t);
-        }
+//        for (Task t : taskList
+//        ) {
+//            System.out.println(t);
+//        }
     }
 
     public void sortByPriorityInput() {
         List<Task> taskList = new ArrayList<>();
-        taskList = taskDAOImp.sortByPriority();
+//        taskList = taskDAOImp.sortByPriority();
         System.out.println("** list of tasks sorted by priority **");
 
         for (Task t : taskList
@@ -114,13 +99,13 @@ public class ConsoleController {
 
     public void sortByCategoryInput() {
         List<Task> taskList;
-        taskList = taskDAOImp.sortByCategory();
+//        taskList = taskDAOImp.sortByCategory();
         System.out.println("** list of tasks sorted by category **");
 
-        for (Task t : taskList
-        ) {
-            System.out.println(t);
-        }
+//        for (Task t : taskList
+//        ) {
+//            System.out.println(t);
+//        }
     }
 
     public int login() {

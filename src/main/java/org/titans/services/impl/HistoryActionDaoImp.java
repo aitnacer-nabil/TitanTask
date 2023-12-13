@@ -1,7 +1,8 @@
-package org.titans.services;
+package org.titans.services.impl;
 
 import org.titans.entities.ActionType;
 import org.titans.entities.TaskHistoryAction;
+import org.titans.services.HistoryActionDao;
 import org.titans.util.ConnectionDB;
 
 import java.sql.*;
@@ -20,14 +21,14 @@ public class HistoryActionDaoImp implements HistoryActionDao {
     public void insert(TaskHistoryAction taskHistoryAction) {
 
         try {
-        String query = "INSERT INTO  task_action_history (history_id,task_id, action_change,time_modification,user_name)" +
+        String query = "INSERT INTO  task_action_history (history_id,task_id, action_change,time_modification,user_id)" +
                 "VALUES (?,?,?,?,?);";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1,taskHistoryAction.getHistory_id());
             preparedStatement.setString(2,taskHistoryAction.getTask_id());
             preparedStatement.setString(3,taskHistoryAction.getActionType().name().toUpperCase());
             preparedStatement.setTimestamp(4,Timestamp.valueOf(LocalDateTime.now()));
-            preparedStatement.setString(5,taskHistoryAction.getUser_name());
+            preparedStatement.setString(5,taskHistoryAction.getUser_id());
             int i = preparedStatement.executeUpdate();
             if(i == 1){
                 System.out.println("Insert Succefully history");
@@ -44,7 +45,7 @@ public class HistoryActionDaoImp implements HistoryActionDao {
     public List<TaskHistoryAction> getHistory() {
         List<TaskHistoryAction> taskHistoryActions = new ArrayList<>();
         try {
-            String query = "SELECT * FROM task_action_history";
+            String query = "SELECT * FROM task_action_history w";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -53,7 +54,7 @@ public class HistoryActionDaoImp implements HistoryActionDao {
                 resultSet.getString("task_id"),
                 ActionType.valueOf(resultSet.getString("action_change")),
                 resultSet.getTimestamp("time_modification"),
-                resultSet.getString("user_name"));
+                resultSet.getString(""));
                 taskHistoryActions.add(taskHistoryAction);
             }
 

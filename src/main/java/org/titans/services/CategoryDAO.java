@@ -15,7 +15,7 @@ public interface CategoryDAO {
     
     List<Category> getAllCategory();
     void addCategory(Category category);
-    Category updateCategory(String ref_category ,Category category );
-    void deleteCategory(String ref_category);
+    Category updateCategory(String id,Category category );
+    void deleteCategory(String id);
     
 }

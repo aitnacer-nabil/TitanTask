@@ -9,7 +9,7 @@ public class TaskHistoryAction {
     String task_id;
     ActionType actionType ;
     Timestamp timeModification;
-    String user_name;
+    String user_id;
 
 
     public TaskHistoryAction( String task_id, ActionType actionType, Timestamp timeModification, String user_id) {
@@ -17,14 +17,14 @@ public class TaskHistoryAction {
         this.task_id = task_id;
         this.actionType = actionType;
         this.timeModification = timeModification;
-        this.user_name = user_id;
+        this.user_id = user_id;
     }
     public TaskHistoryAction(  String history_id,String task_id, ActionType actionType, Timestamp timeModification, String user_id) {
         this.history_id = history_id;
         this.task_id = task_id;
         this.actionType = actionType;
         this.timeModification = timeModification;
-        this.user_name = user_id;
+        this.user_id = user_id;
     }
     public String getHistory_id() {
         return history_id;
@@ -58,11 +58,11 @@ public class TaskHistoryAction {
         this.timeModification = timeModification;
     }
 
-    public String getUser_name() {
-        return user_name;
+    public String getUser_id() {
+        return user_id;
     }
 
-    public void setUser_name(String user_name) {
-        this.user_name = user_name;
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
     }
 }
