@@ -16,9 +16,9 @@ public interface TaskDAO {
     List<Task> sortByPriority();
     List<Task> sortByCategory();
     void addPriorityToTask(int taskId,Priority priority);
-    void addCategoryToTask(Category category);
+    void addCategoryToTask(int id,String ref_category);
 
-    List <Task> filterByCategory(Category category);
+    List <Task> filterByCategory(String category_name);
 
 
 }

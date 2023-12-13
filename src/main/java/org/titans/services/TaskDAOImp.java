@@ -15,7 +15,11 @@ import java.util.List;
 import org.titans.util.ConnectionDB;
 
 public class TaskDAOImp implements TaskDAO {
+
     HistoryActionDaoImp historyActionDaoImp;
+
+
+
     Connection connection;
 
     public TaskDAOImp() {
@@ -36,17 +40,19 @@ public class TaskDAOImp implements TaskDAO {
 
             int i = preparedStatement.executeUpdate();
             if (i == 1) {
+
                 TaskHistoryAction taskHistoryAction = historyActionDaoImp.createTaskHiistoryObj(
                         15,
                         ActionType.CREATE,
                         "Nabil"
                 );
                 historyActionDaoImp.insert(taskHistoryAction);
+
+
                 System.out.println("Add successfully");
             } else {
                 System.out.println("Not Add successfully");
             }
-
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -80,7 +86,6 @@ public class TaskDAOImp implements TaskDAO {
             }
             preparedStatement.close();
 
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -89,7 +94,6 @@ public class TaskDAOImp implements TaskDAO {
 
     @Override
     public void deleteTask(Integer id) {
-
 
         String deleteQuery = "DELETE FROM task WHERE id= ?";
         if (connection == null) {
@@ -134,7 +138,6 @@ public class TaskDAOImp implements TaskDAO {
                 Task task = generateTaskFromResultSet(resultSet);
                 taskList.add(task);
             }
-
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
@@ -182,7 +185,6 @@ public class TaskDAOImp implements TaskDAO {
                 taskDate,
                 category,
                 taskPriority
-
         );
 
         return task;
@@ -195,13 +197,13 @@ public class TaskDAOImp implements TaskDAO {
         ResultSet resultSet = null; //stocker les résultats d'une requête SQL.
         List<Task> tasks = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM task LEFT JOIN category ON task.ref_category = category.ref_category ORDER BY \n" +
-                    "case priority \n" +
-                    "when \"haute\" then 1\n" +
-                    "when \"moyenne\" then 2\n" +
-                    "when \"basse\" then 3\n" +
-                    "else 4\n" +
-                    "end;";
+            String sql = "SELECT * FROM task LEFT JOIN category ON task.ref_category = category.ref ORDER BY \n"
+                    + "case priority \n"
+                    + "when \"haute\" then 1\n"
+                    + "when \"moyenne\" then 2\n"
+                    + "when \"basse\" then 3\n"
+                    + "else 4\n"
+                    + "end;";
             statement = connection.createStatement();
             resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
@@ -228,12 +230,14 @@ public class TaskDAOImp implements TaskDAO {
             preparedStatement.setInt(2, taskId);
             int i = preparedStatement.executeUpdate();
             if (i == 1) {
+
                 TaskHistoryAction taskHistoryAction = historyActionDaoImp.createTaskHiistoryObj(
                         15,
                         ActionType.UPDATE,
                         "Nabil"
                 );
                 historyActionDaoImp.insert(taskHistoryAction);
+
                 System.out.println("Update successfully");
             } else {
                 System.out.println("Error ");
@@ -245,12 +249,45 @@ public class TaskDAOImp implements TaskDAO {
     }
 
     @Override
-    public void addCategoryToTask(Category category) {
+    public void addCategoryToTask(int id,String ref_category) {
+              try {
+            String sql = "UPDATE task set ref_category = ? WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, ref_category);
+            preparedStatement.setInt(2, id);
+            int i = preparedStatement.executeUpdate();
+            if (i == 1) {
+                System.out.println("Update successfully");
+            } else {
+                System.out.println("Error ");
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
     }
 
     @Override
-    public List<Task> filterByCategory(Category category) {
-        return null;
+    public List<Task> filterByCategory(String category_name) {
+         List<Task> tasks = new ArrayList<>();
+        try {
+            String sql = "SELECT id,name,description,date_creation,priority,category.name_category,category.ref FROM task JOIN  category ON task.ref_category=category.ref WHERE category.name_category=?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+           
+            preparedStatement.setString(1, category_name);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Task task = generateTaskFromResultSet(resultSet);
+                tasks.add(task);
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return tasks;
     }
+
 }
