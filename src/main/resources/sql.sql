@@ -5,7 +5,7 @@ use gestion;
 create table if not exists category
 (
     ref varchar(55) primary key,
-    name_category         varchar(100)
+    name_category         varchar(100) 
 );
 create table if not exists task
 (
