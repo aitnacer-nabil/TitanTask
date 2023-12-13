@@ -14,6 +14,7 @@ create table if not exists user
 create table if not exists category
 (
     ref           int primary key auto_increment,
+    id_category varchar(100),
     name_category varchar(100)
 );
 create table if not exists task
@@ -31,7 +32,8 @@ create table if not exists task
 create table if not exists task_action_history
 (
     id                int primary key AUTO_INCREMENT,
-    task_id           int,
+    history_id varchar(55),
+    task_id           varchar(55),
     action_change     enum ('CREATE','UPDATE','DELETE'),
     time_modification TIMESTAMP,
     user_name         varchar(250)
@@ -47,37 +49,26 @@ VALUES ('user1', 'Ahmed', 'ahmed@email.com', 'USER', 'password1'),
        ('user6', 'Nadia', 'nadia@email.com', 'USER', 'password6'),
        ('user7', 'Hassan', 'hassan@email.com', 'USER', 'password7'),
        ('admin1', 'Sara', 'sara@email.com', 'ADMIN', 'admin_password');
-INSERT INTO category (name_category)
-VALUES ('Work'),
-       ('Personal'),
-       ('Shopping'),
-       ('Health'),
-       ('Education'),
-       ('Entertainment');
-INSERT INTO task (task_id, name, description, date_creation, priority, ref_category, ref_user)
-VALUES ('task1', 'Complete Project Report', 'Finish the report for the upcoming meeting', CURRENT_TIMESTAMP, 'haute',
-        'Work', 'user1'),
-       ('task2', 'Gym Session', 'Hit the gym for a workout', CURRENT_TIMESTAMP, 'moyenne', 'Health', 'user2'),
-       ('task3', 'Buy Groceries', 'Purchase items for the week', CURRENT_TIMESTAMP, 'basse', 'Shopping', 'user3'),
-       ('task4', 'Study Java Stream API', 'Learn and practice Java Stream API concepts', CURRENT_TIMESTAMP, 'moyenne',
-        'Education', 'user4'),
-       ('task5', 'Movie Night', 'Watch a movie with friends', CURRENT_TIMESTAMP, 'basse', 'Entertainment', 'user5'),
-       ('task6', 'Prepare Presentation', 'Get ready for the upcoming client presentation', CURRENT_TIMESTAMP, 'haute',
-        'Work', 'user6'),
-       ('task7', 'Read a Book', 'Spend some time reading a good book', CURRENT_TIMESTAMP, 'basse', 'Personal', 'user7'),
-       ('task8', 'Code Review', 'Review and provide feedback on team members\' code', CURRENT_TIMESTAMP, 'moyenne',
-        'Work', 'user1'),
-       ('task9', 'Cook Dinner', 'Prepare a delicious dinner for the family', CURRENT_TIMESTAMP, 'basse', 'Personal',
-        'user2'),
-       ('task10', 'Yoga Session', 'Practice yoga for relaxation', CURRENT_TIMESTAMP, 'moyenne', 'Health', 'user3'),
-       ('task11', 'Online Course', 'Enroll in an online course to enhance skills', CURRENT_TIMESTAMP, 'moyenne',
-        'Education', 'user4'),
-       ('task12', 'Plan Weekend Trip', 'Organize a short weekend getaway with friends', CURRENT_TIMESTAMP, 'haute',
-        'Personal', 'user5'),
-       ('task13', 'Write Blog Post', 'Create a blog post on a relevant topic', CURRENT_TIMESTAMP, 'moyenne', 'Work',
-        'user6'),
-       ('task14', 'Visit Doctor', 'Schedule and visit the doctor for a health checkup', CURRENT_TIMESTAMP, 'haute',
-        'Health', 'user7'),
-       ('task15', 'Movie Marathon', 'Have a movie marathon at home', CURRENT_TIMESTAMP, 'basse', 'Entertainment',
-        'user1');
+INSERT INTO category (id_category, name_category)
+VALUES ('0c5a7','Work'),
+       ('86411','Personal'),
+       ('40ef8','Shopping'),
+       ('eceb1','Health'),
+       ('cdeaf','Education'),
+       ('02e45','Entertainment');
 
+INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (1, 'task1', 'Complete Project Report', 'Finish the report for the upcoming meeting', '2023-12-13 21:44:46', 'haute', '0c5a7', 'user1');
+INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (6, 'task6', 'Prepare Presentation', 'Get ready for the upcoming client presentation', '2023-12-13 21:44:46', 'haute', '0c5a7', 'user6');
+INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (8, 'task8', 'Code Review', 'Review and provide feedback on team members\' code', '2023-12-13 21:44:46', 'moyenne', '0c5a7', 'user1');
+INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (13, 'task13', 'Write Blog Post', 'Create a blog post on a relevant topic', '2023-12-13 21:44:46', 'moyenne', '0c5a7', 'user6');
+INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (3, 'task3', 'Buy Groceries', 'Purchase items for the week', '2023-12-13 21:44:46', 'basse', '40ef8', 'user3');
+INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (5, 'task5', 'Movie Night', 'Watch a movie with friends', '2023-12-13 21:44:46', 'basse', '02e45', 'user5');
+INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (15, 'task15', 'Movie Marathon', 'Have a movie marathon at home', '2023-12-13 21:44:46', 'basse', '02e45', 'user1');
+INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (7, 'task7', 'Read a Book', 'Spend some time reading a good book', '2023-12-13 21:44:46', 'basse', '86411', 'user7');
+INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (9, 'task9', 'Cook Dinner', 'Prepare a delicious dinner for the family', '2023-12-13 21:44:46', 'basse', '86411', 'user2');
+INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (12, 'task12', 'Plan Weekend Trip', 'Organize a short weekend getaway with friends', '2023-12-13 21:44:46', 'haute', '86411', 'user5');
+INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (4, 'task4', 'Study Java Stream API', 'Learn and practice Java Stream API concepts', '2023-12-13 21:44:46', 'moyenne', 'cdeaf', 'user4');
+INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (11, 'task11', 'Online Course', 'Enroll in an online course to enhance skills', '2023-12-13 21:44:46', 'moyenne', 'cdeaf', 'user4');
+INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (2, 'task2', 'Gym Session', 'Hit the gym for a workout', '2023-12-13 21:44:46', 'moyenne', 'eceb1', 'user2');
+INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (10, 'task10', 'Yoga Session', 'Practice yoga for relaxation', '2023-12-13 21:44:46', 'moyenne', 'eceb1', 'user3');
+INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (14, 'task14', 'Visit Doctor', 'Schedule and visit the doctor for a health checkup', '2023-12-13 21:44:46', 'haute', 'eceb1', 'user7');

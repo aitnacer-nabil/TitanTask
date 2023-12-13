@@ -30,19 +30,22 @@ public class TaskDAOImp implements TaskDAO {
     @Override
     public void addTask(Task task) {
         try {
-            String query = "INSERT INTO task (name,description,date_creation,priority) VALUES(?,?,?,?)";
+            String query = "INSERT INTO task (task_id, name,description,date_creation,priority,ref_category,ref_user) VALUES(?,?,?,?,?,?,?)";
 
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1, task.getName());
-            preparedStatement.setString(2, task.getDescription());
-            preparedStatement.setTimestamp(3, Timestamp.valueOf(LocalDateTime.now()));
-            preparedStatement.setString(4, task.getPriority().name());
+            preparedStatement.setString(1, task.getId());
+            preparedStatement.setString(2, task.getName());
+            preparedStatement.setString(3, task.getDescription());
+            preparedStatement.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+            preparedStatement.setString(5, task.getPriority().name());
+            preparedStatement.setString(6, task.getCategory().getId());
+            preparedStatement.setString(7, task.getUser_id());
 
             int i = preparedStatement.executeUpdate();
             if (i == 1) {
 
                 TaskHistoryAction taskHistoryAction = historyActionDaoImp.createTaskHiistoryObj(
-                        15,
+                        task.getId(),
                         ActionType.CREATE,
                         "Nabil"
                 );

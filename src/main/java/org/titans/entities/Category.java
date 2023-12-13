@@ -1,11 +1,19 @@
 package org.titans.entities;
 
+import org.titans.util.Utils;
+
 public class Category {
 
     private String nom;
 
-    public Category( String nom) {
+    public String getId() {
+        return id;
+    }
 
+    private String id;
+
+    public Category( String nom) {
+        this.id = Utils.GenerateId();
         this.nom = nom;
     }
 

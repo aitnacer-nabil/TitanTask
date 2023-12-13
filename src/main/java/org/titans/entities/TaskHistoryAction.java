@@ -1,36 +1,44 @@
 package org.titans.entities;
 
+import org.titans.util.Utils;
+
 import java.sql.Timestamp;
 
 public class TaskHistoryAction {
-    int id;
-    int task_id;
+    String history_id;
+    String task_id;
     ActionType actionType ;
+    Timestamp timeModification;
+    String user_name;
 
-    public int getId() {
-        return id;
-    }
 
-    public TaskHistoryAction( int task_id, ActionType actionType, Timestamp timeModification, String userName) {
-
+    public TaskHistoryAction( String task_id, ActionType actionType, Timestamp timeModification, String user_id) {
+        this.history_id = Utils.GenerateId();
         this.task_id = task_id;
         this.actionType = actionType;
         this.timeModification = timeModification;
-        this.userName = userName;
+        this.user_name = user_id;
+    }
+    public TaskHistoryAction(  String history_id,String task_id, ActionType actionType, Timestamp timeModification, String user_id) {
+        this.history_id = history_id;
+        this.task_id = task_id;
+        this.actionType = actionType;
+        this.timeModification = timeModification;
+        this.user_name = user_id;
+    }
+    public String getHistory_id() {
+        return history_id;
     }
 
-    public TaskHistoryAction() {
+    public void setHistory_id(String history_id) {
+        this.history_id = history_id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getTask_id() {
+    public String getTask_id() {
         return task_id;
     }
 
-    public void setTask_id(int task_id) {
+    public void setTask_id(String task_id) {
         this.task_id = task_id;
     }
 
@@ -50,15 +58,11 @@ public class TaskHistoryAction {
         this.timeModification = timeModification;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getUser_name() {
+        return user_name;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
     }
-
-    Timestamp timeModification;
-    String userName;
-
 }
