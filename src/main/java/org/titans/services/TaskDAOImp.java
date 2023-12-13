@@ -173,11 +173,11 @@ Connection connection;
 
     @Override
     public List<Task> sortByPriority() {;
-        Statement statement = null; //envoyer des requêtes SQL pré-compilées à une base de données
-        ResultSet resultSet = null; //stocker les résultats d'une requête SQL.
+        Statement statement = null;
+        ResultSet resultSet = null;
         List<Task> tasks = new ArrayList<>();
         try {
-            String sql = "SELECT * FROM task LEFT JOIN category ON task.ref_category = category.ref_category ORDER BY \n" +
+            String sql = "SELECT * FROM task LEFT JOIN category ON task.ref_category = category.ref ORDER BY \n" +
                     "case priority \n" +
                     "when \"haute\" then 1\n" +
                     "when \"moyenne\" then 2\n" +
@@ -187,7 +187,8 @@ Connection connection;
             statement = connection.createStatement();
             resultSet = statement.executeQuery(sql);
             while (resultSet.next()) {
-                generateTaskFromResultSet(resultSet);
+                Task task = generateTaskFromResultSet(resultSet);
+                tasks.add(task);
 
             }
         } catch (SQLException e) {
@@ -198,7 +199,22 @@ Connection connection;
 
     @Override
     public List<Task> sortByCategory() {
-        return null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        List<Task> tasks = new ArrayList<>();
+        try {
+            String sqlSort = "SELECT * FROM task LEFT JOIN category ON task.ref_category = category.ref ORDER BY name_category";
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sqlSort);
+            while (resultSet.next()) {
+                Task task = generateTaskFromResultSet(resultSet);
+                tasks.add(task);
+
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return tasks;
     }
 
     @Override

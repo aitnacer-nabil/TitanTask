@@ -1,7 +1,7 @@
 package org.titans.entities;
 
+import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Locale;
 
 public class Task {
     private int id ;
@@ -10,7 +10,8 @@ public class Task {
     private Date dateCreation;
     private Category category;
     private Priority priority;
-
+    public Task() {
+    }
     public Task(int id, String name, String description, Date dateCreation, Category category, Priority priority) {
         this.id = id;
         this.name = name;
@@ -29,7 +30,10 @@ public class Task {
     }
 
 
-    public Task() {
+    public Task(String name, String description, Timestamp timestamp, Priority priority) {
+    }
+
+    public Task(String task1, String desc, Timestamp valueOf, Object o, Priority haute) {
     }
 
     public int getId() {
