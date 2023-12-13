@@ -1,7 +1,15 @@
+drop database gestion;
 create database if not exists gestion;
 
 use gestion;
-
+create table if not exists user(
+    id int primary key AUTO_INCREMENT,
+    user_id varchar(55) ,
+    user_name varchar(55),
+    user_email varchar(55),
+    user_role ENUM('ADMIN','USER'),
+    user_password varchar(255)
+);
 create table if not exists category
 (
     ref varchar(55) primary key,
@@ -10,12 +18,15 @@ create table if not exists category
 create table if not exists task
 (
     id            int primary key AUTO_INCREMENT,
+    task_id varchar(55),
     name          varchar(55),
     description   TEXT,
     date_creation TIMESTAMP,
     priority      ENUM ('haute','basse','moyenne'),
-    ref_category  varchar(55) references category (ref)
+    ref_category  varchar(55) references category (ref),
+    ref_user varchar(55) references  user(user_id)
 );
+
 create table if not exists task_action_history
 (
     id            int primary key AUTO_INCREMENT,

@@ -1,38 +1,42 @@
 package org.titans.entities;
 
+import org.titans.util.Utils;
+
+import java.sql.Timestamp;
 import java.util.Date;
-import java.util.Locale;
 
 public class Task {
-    private int id ;
+    private String id ;
     private String name;
     private String description;
     private Date dateCreation;
     private Category category;
     private Priority priority;
+    private String user_id ;
+    public Task() {
+    }
 
-    public Task(int id, String name, String description, Date dateCreation, Category category, Priority priority) {
-        this.id = id;
+    public Task(String name, String description, Date dateCreation, Category category, Priority priority, String user_id) {
+       this.id = Utils.GenerateId();
         this.name = name;
         this.description = description;
         this.dateCreation = dateCreation;
         this.category = category;
         this.priority = priority;
-    }
-    public Task(String name, String description, Category category, Priority priority) {
-
-        this.name = name;
-        this.description = description;
-        this.category = category;
-        this.priority = priority;
-
+        this.user_id = user_id;
     }
 
 
-    public Task() {
+
+
+
+    public Task(String name, String description, Timestamp timestamp, Priority priority) {
     }
 
-    public int getId() {
+    public Task(String task1, String desc, Timestamp valueOf, Object o, Priority haute) {
+    }
+
+    public String getId() {
         return id;
     }
 
@@ -56,7 +60,7 @@ public class Task {
         return priority;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
