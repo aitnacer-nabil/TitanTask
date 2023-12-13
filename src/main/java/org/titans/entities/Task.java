@@ -13,8 +13,7 @@ public class Task {
     private Category category;
     private Priority priority;
     private String user_id ;
-    public Task() {
-    }
+
 
     public Task(String name, String description, Date dateCreation, Category category, Priority priority, String user_id) {
        this.id = Utils.GenerateId();
@@ -30,11 +29,7 @@ public class Task {
 
 
 
-    public Task(String name, String description, Timestamp timestamp, Priority priority) {
-    }
 
-    public Task(String task1, String desc, Timestamp valueOf, Object o, Priority haute) {
-    }
 
     public String getId() {
         return id;
@@ -93,6 +88,7 @@ public class Task {
                 ", dateCreation=" + dateCreation +
                 ", category=" + category +
                 ", priority=" + priority +
+                ", user_id='" + user_id + '\'' +
                 '}';
     }
 }
