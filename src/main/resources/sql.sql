@@ -24,6 +24,7 @@ create table if not exists task
     name          varchar(55) not null,
     description   TEXT not null,
     date_creation TIMESTAMP not null,
+
     priority      ENUM ('haute','basse','moyenne'),
     ref_category  varchar(55) references category (id_category) ,
     ref_user      varchar(55) references user (user_id)

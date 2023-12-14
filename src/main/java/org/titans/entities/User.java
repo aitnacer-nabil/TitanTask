@@ -37,9 +37,13 @@ public class User {
       this.password = password;
       this.role = role;
    }
-   public User() {
 
+
+   public User() {
+      this.id = Utils.GenerateId();
    }
+
+
    public User(String username, String email, String password, Role role) {
       this.id = Utils.GenerateId();
       this.username = username;
