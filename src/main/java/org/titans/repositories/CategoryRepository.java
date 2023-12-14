@@ -6,29 +6,42 @@ import org.titans.entities.Category;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class CategoryRepository {
     CategoryDAOImp categoryDAOImp = new CategoryDAOImp();
     List<Category> categoryList = new ArrayList<>();
 
-    List<Category> getAllCategoryRepo(){
-        categoryList=categoryDAOImp.getAllCategory();
-        return categoryList;}
+    public CategoryRepository() {
+        this.categoryList = categoryDAOImp.getAllCategory();
+    }
+
+
 
     void addCategoryRep(Category category){
 
-        categoryDAOImp.addCategory(category);
+        if (categoryDAOImp.addCategory(category)){
+            categoryList.add(category);
+        };
     }
 
-    Category updateCategoryRepo(String id,Category category ){
-        Category category1= new Category();
-        category1= categoryDAOImp.updateCategory(id,category);
+    void updateCategoryRepo(String id,Category category ) throws Exception {
 
-        return category1;}
+        if (categoryDAOImp.updateCategory(id, category)) {
+            int index = IntStream.range(0, categoryList.size())
+                    .filter(i -> categoryList.get(i).getId().equals(id))
+                    .findFirst()
+                    .orElseThrow(Exception::new);
+            categoryList.set(index, category);
+        }
+
+        }
 
     void deleteCategoryRepo(String id){
-        categoryDAOImp.deleteCategory(id);
-        categoryList.stream().filter(category -> category.getId().equals(id)).findFirst().ifPresent(categoryList::remove);
+        if(categoryDAOImp.deleteCategory(id)){
+            categoryList.stream().filter(category -> category.getId().equals(id)).findFirst().ifPresent(categoryList::remove);
+        }
+
 
     }
 }

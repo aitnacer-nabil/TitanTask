@@ -26,7 +26,8 @@ public class TaskDAOImp implements TaskDAO {
     }
 
     @Override
-    public void addTask(Task task) {
+    public boolean addTask(Task task) {
+        boolean isAdded = false;
         try {
             String query = "INSERT INTO task (task_id, name,description,date_creation,priority,ref_category,ref_user) VALUES(?,?,?,?,?,?,?)";
 
@@ -52,6 +53,7 @@ public class TaskDAOImp implements TaskDAO {
 
 
                 System.out.println("Add successfully");
+                return true;
             } else {
                 System.out.println("Not Add successfully");
             }
@@ -59,12 +61,13 @@ public class TaskDAOImp implements TaskDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
+        return false;
     }
 
 
     @Override
-    public Task updateTask(String taskId, Task task) {
+    public boolean updateTask(String taskId, Task task) {
+
         try {
 
             String query = "update task set  name = ? ,description = ? , date_creation = CURRENT_TIMESTAMP, priority = ?, ref_category = ? , ref_user = ? where  task_id = ?;";
@@ -86,23 +89,23 @@ public class TaskDAOImp implements TaskDAO {
                 );
                 historyActionDaoImp.insert(taskHistoryAction);
                 preparedStatement.close();
-                return task;
+                return true;
             }
 
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
+        return false;
     }
 
     @Override
-    public void deleteTask(String id, String userId) {
+    public boolean deleteTask(String id, String userId) {
 
         String deleteQuery = "DELETE FROM task WHERE task_id= ?";
         if (connection == null) {
             System.out.println("Couldn't get connection to the database");
-            return;
+            return false;
         }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
@@ -118,7 +121,9 @@ public class TaskDAOImp implements TaskDAO {
                         userId
                 );
                 historyActionDaoImp.insert(taskHistoryAction);
+
                 System.out.println("Task deleted successfully");
+                return true;
             } else {
                 System.out.println("Task not Found");
             }
@@ -127,7 +132,7 @@ public class TaskDAOImp implements TaskDAO {
             se.printStackTrace();
 
         }
-
+        return false;
     }
 
     @Override

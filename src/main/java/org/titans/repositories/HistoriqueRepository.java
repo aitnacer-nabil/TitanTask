@@ -9,13 +9,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class HistoriqueRepository {
-    HistoryActionDaoImp historyActionDaoImp= new HistoryActionDaoImp();
-    List<TaskHistoryAction> historyList = new ArrayList<>();
+    HistoryActionDaoImp historyActionDaoImp;
+    List<TaskHistoryAction> historyList;
 
-    void insertRepo(TaskHistoryAction taskHistoryAction){
-        historyActionDaoImp.insert(taskHistoryAction);
+
+
+    public HistoriqueRepository() {
+        this.historyActionDaoImp = new HistoryActionDaoImp();
+        this.historyList = historyActionDaoImp.getHistory();
     }
-    List<TaskHistoryAction> getHistoryRepo(){
-        historyList= historyActionDaoImp.getHistory();
-        return historyList;}
+
+    public List<TaskHistoryAction> getHistoryList() {
+        return historyList;
+    }
+    public void deleteHistory(){
+        //TODO impl delete history from dao
+    }
 }

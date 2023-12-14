@@ -5,6 +5,7 @@ import org.titans.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class UserRepository {
     UserDaoImpl userDAOImpl = new UserDaoImpl();
@@ -38,12 +39,11 @@ public class UserRepository {
 
     public void updateUser(String id, User user) throws Exception {
         if (userDAOImpl.updateUser(id, user) == 1) {
-            listUsers.stream()
-                    .filter(u -> u.getId().equals(id))
+            int index = IntStream.range(0,listUsers.size())
+                    .filter(i -> listUsers.get(i).getId().equals(id))
                     .findFirst()
-                    .map(user1 -> {
-                        return user;
-                    }).orElseThrow(Exception::new);
+                    .orElseThrow(Exception::new);
+            listUsers.set(index,user);
         }
         ;
     }

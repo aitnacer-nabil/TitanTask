@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 
 public class TaskRepository {
@@ -22,28 +23,37 @@ public class TaskRepository {
     }
 
     public void addTaskRepo(Task task) {
-        taskDAOImp.addTask(task);
+        if(taskDAOImp.addTask(task)){
+            tasksList.add(task);
+        };
     }
 
-    public List<Task> getAllTasksRepo() {
-        tasksList = taskDAOImp.getAllTasks();
+    public List<Task> getTasksList() {
         return tasksList;
-
     }
 
-    public Task updateTaskRepo(String taskId, Task task) {
-        taskDAOImp.updateTask(taskId, task);
-        return task;
+    public void updateTaskRepo(String taskId, Task task) throws Exception {
+        if (taskDAOImp.updateTask(taskId, task)){
+          int index = IntStream.range(0,tasksList.size())
+                  .filter(i -> tasksList.get(i).getId().equals(taskId))
+                  .findFirst()
+                  .orElseThrow(Exception::new);
+          tasksList.set(index,task);
+
+        }
+
     }
 
     public void deleteTaskRepo(String id, String userId) {
-        taskDAOImp.deleteTask(id, userId);
-        tasksList.stream().filter(task -> task.getId().equals(userId)).findFirst().ifPresent(tasksList::remove);
+        if(taskDAOImp.deleteTask(id, userId)){
+            tasksList.stream().filter(task -> task.getId().equals(userId)).findFirst().ifPresent(tasksList::remove);
+        }
+
     }
 
     public Task getTaskById(String id) {
-        Task task = taskDAOImp.getTaskById(id);
-        return task;
+        return taskDAOImp.getTaskById(id);
+
     }
 
     public List<Task> getTaskByUserIdRepo(String userId) {
@@ -76,18 +86,18 @@ public class TaskRepository {
 
     public List<Task> filterByCategoryRepo(String nameCategory) {
 
-        List<Task> tasksFiltred = tasksList.stream()
+        return tasksList.stream()
                 .filter(task -> task.getCategory().getNom().equals(nameCategory))
                 .collect(Collectors.toList());
-        return tasksFiltred;
+
     }
 
     public List<Task> filterByPriorityRepo(Priority priority) {
 
-        List<Task> tasksFiltred = tasksList.stream()
+        return tasksList.stream()
                 .filter(task -> task.getPriority().equals(priority))
                 .collect(Collectors.toList());
-        return tasksFiltred;
+
     }
 }
 
