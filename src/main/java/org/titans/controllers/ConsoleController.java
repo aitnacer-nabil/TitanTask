@@ -1,9 +1,10 @@
 package org.titans.controllers;
 
-import org.titans.entities.Priority;
-import org.titans.entities.Task;
+import org.titans.entities.*;
 import org.titans.dao.impl.TaskDAOImp;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.List;
@@ -11,190 +12,294 @@ import java.util.List;
 
 public class ConsoleController {
     Scanner scanner;
-    ArrayList<Task> tasks;
-    String userName = "root";
-    String password = "root";
-
-    TaskDAOImp taskDAOImp = new TaskDAOImp();
 
 
     public ConsoleController() {
         scanner = new Scanner(System.in);
-
     }
 
-    public void addTaskInput() {
-
-        ArrayList<Task> tasksList = new ArrayList<>();
-
-        System.out.println("Name Task :");
-        String name = scanner.next();
-
-        System.out.println("Description Task :");
-        String description = scanner.next();
-
-        System.out.println("Priority Task :");
-        System.out.println("tapez 1 pour HAUTE tapez 2 pour Moyenne Tapez 3 pour BASSE");
-        Priority priority = Priority.BASSE;
-
-        int choix = scanner.nextInt();
-        switch (choix) {
-            case 1:
-                priority = Priority.HAUTE;
-                break;
-            case 2:
-                priority = Priority.MOYENNE;
-                break;
-            case 3:
-                priority = Priority.BASSE;
-                break;
-            default:
-                break;
+    public void LoginMenu() {
+        System.out.println("========================================");
+        System.out.println("Gestion des Tâches ");
+        System.out.println("Login : ");
+        System.out.print("Entrer  email : ");
+        String email = scanner.nextLine();
+        System.out.print("Entrer  password : ");
+        String password = scanner.next();
+        System.out.println("========================================");
+        //TODO call login method
+        User testUSer = new User("YouDa", "sara@example.com", "admin_password", Role.USER);
+        if (testUSer == null) {
+            //TODO display message error
         }
-//
-//        Task task = new Task();
-//
-//        task.setName(name);
-//        task.setDescription(description);
-//        task.setDateCreation(Timestamp.valueOf(LocalDateTime.now()));
-//        task.setPriority(priority);
-//        taskDAOImp.addTask(task);
-//        System.out.println(task);
-    }
-
-    public void getAllTasksInput() {
-        List<Task> taskList;
-        taskList = taskDAOImp.getAllTasks();
-        System.out.println("La liste des taches :");
-
-        for (Task t : taskList
-        ) {
-            System.out.println(t);
-        }
-    }
-
-    public void sortByDateInput() {
-        List<Task> taskList;
-//        taskList = taskDAOImp.sortByDate();
-        System.out.println("** list of tasks sorted by date **");
-
-//        for (Task t : taskList
-//        ) {
-//            System.out.println(t);
-//        }
-    }
-
-    public void sortByPriorityInput() {
-        List<Task> taskList = new ArrayList<>();
-//        taskList = taskDAOImp.sortByPriority();
-        System.out.println("** list of tasks sorted by priority **");
-
-        for (Task t : taskList
-        ) {
-            System.out.println(t);
-        }
-    }
-
-    public void sortByCategoryInput() {
-        List<Task> taskList;
-//        taskList = taskDAOImp.sortByCategory();
-        System.out.println("** list of tasks sorted by category **");
-
-//        for (Task t : taskList
-//        ) {
-//            System.out.println(t);
-//        }
-    }
-
-    public int login() {
-        Scanner scanner = new Scanner(System.in);
-
-        System.out.println("Entrez le nom de l'utilisateur ");
-        String user = scanner.next();
-
-
-        if (user.equalsIgnoreCase(userName)) {
-            System.out.println("Entrez le mot de passe ");
-            String password = scanner.next();
-            if (password.equals(password))
-                return 1;
-            else
-                System.out.println(" mot de passe incorrect");
-            return 0;
+        if (testUSer.getRole() == Role.ADMIN) {
+            displayMenuAdmin(testUSer);
         } else {
-            System.out.println(" utilisateur  incorrect");
-            return 0;
+            displayMenuUser(testUSer);
         }
     }
 
-    public int validInputInt(String message) {
-        String input;
-        int number;
+    private void displayMenuUser(User user) {
+        System.out.println("User : " + user.getUsername());
+        option:
+        while (true){
 
-        do {
-            System.out.print("Entrez un nombre : ");
-            input = scanner.next();
-            if (!input.matches("\\d+")) {
-                System.out.println(message);
+            System.out.println("1. Afficher toutes mes tasks");
+            System.out.println("2. Trier la liste ");
+
+
+            int option = scanner.nextInt();
+            switch (option){
+                case 1:
+                    displayTasksByUserId(user.getId() );
+                    break ;
+                case 2:
+                    sort();
+                    //TODO complete code
             }
-        } while (!input.matches("\\d+"));
 
-        return Integer.parseInt(input);
+        }
     }
 
-    public void MainMenu() {
+    private void sort() {
+        System.out.println("choisis ");
 
 
-        String mainMenuMessage = "* To Add Task click 1:\n" +
-                "* To display AllTask click 2 \n" +
-                "* To display the list of tasks sorted by date click 3 \n" +
-                "* To display the list of tasks sorted by priority click 4 \n" +
-                "* To display the list of tasks sorted by category click 5 \n" +
-                "* To exit click 6 \n";
+    }
 
+    private void displayTasksByUserId(String id) {
+        System.out.println("La liste des Tasks");
 
+        //TODO getlist of task By user
+        displayTasks(new ArrayList<>());
+
+    }
+
+    private void displayMenuAdmin(User user) {
+        System.out.println("Admin : " + user.getUsername());
         option:
         while (true) {
-            System.out.println("************************************************");
-            System.out.println("\t \t \t \t Tasks Manager");
-            System.out.println("************************************************");
-            System.out.println(mainMenuMessage);
+            System.out.println("1. Créer un utilisateur");
+            System.out.println("2. Créer une catégorie");
+            System.out.println("3. Créer une tâche");
+            System.out.println("4. Afficher la liste des utilisateurs");
+            System.out.println("5. Afficher la liste des catégories");
+            System.out.println("6. Afficher la liste des tâches");
+            System.out.println("7. Afficher l'historique");
+            System.out.println("8. Mettre à jour un utilisateur");
+            System.out.println("9. Mettre à jour une tâche");
+            System.out.println("10. Supprimer une tâche");
+            System.out.println("11. importer un fichier");
+            System.out.println("12. Exporter vers un fichier JSON");
 
-            int option = validInputInt(mainMenuMessage);
+            int option = scanner.nextInt();
             switch (option) {
                 case 1:
-                    addTaskInput();
-                    MainMenu();
-                    ;
+                    User user1 = createUserFromInput();
+                    //TODO ajoute user to list and db
                     break;
                 case 2:
-                    getAllTasksInput();
-                    MainMenu();
-                    ;
+                    createCategoryFromInput();
+                    //TODO category to list and db
                     break;
                 case 3:
-                    sortByDateInput();
-                    MainMenu();
-                    ;
+                    //TODO list of category and users
+                    createTaskFromInput(new ArrayList<>(),new ArrayList<>());
                     break;
                 case 4:
-                    sortByPriorityInput();
-                    MainMenu();
-                    ;
+                    // Afficher la liste des utilisateurs
+                    //TODO ajoute list users
+                    displayUser(new ArrayList<>());
+                    break ;
+                case 5 :
+                    //TODO ajoute category list
+                    displayCatigory(new ArrayList<>());
                     break;
-                case 5:
-                    sortByCategoryInput();
-                    MainMenu();
-                    ;
+                case 6 :
+                    //TODO ajoute list tasks
+                    displayTasks(new ArrayList<>());
+                    break ;
+                case 7:
+                    //TODO ajout list of historique
+                    displayHistory(new ArrayList<>());
+                    break ;
+                case 8:
+                    //TODO get list of user
+                    updateUSer(new ArrayList<>());
+                    break ;
+                case 9:
+                    //TODO get list of task
+                    updateTask(new ArrayList<>());
                     break;
-                case 6:
-                    break option;
-                default:
-                    break;
+                case 10:
+                    //TODO get list of tasks;
+                    deleteTask();
+                case 11:
+
+
+
+
+
+
+
+
+
+
 
             }
         }
 
+
+    }
+
+    private void deleteTask() {
+        displayTasks(new ArrayList<>());
+        System.out.print("Sélectionner un identifiant : ");
+        String id = scanner.nextLine();
+
+
+        //TODO get delete method and send the id
+
+
+    }
+
+    private User createUserFromInput() {
+        User user = new User();
+        System.out.println("\t- Définir le nom :");
+        String nom = scanner.next();
+        System.out.println("\t- Définir l'email :");
+        String email = scanner.next();
+        System.out.println("\t- Définir le mot de passe");
+        String password = scanner.next();
+        Role role = chooseRole();
+        user.setUsername(nom);
+        user.setEmail(email);
+        user.setPassword(password);
+        user.setRole(role);
+        return user;
+
+
+    }
+
+    private Category createCategoryFromInput() {
+
+        System.out.println("\t- Saisir le nom de la catégorie");
+        String nom = scanner.nextLine();
+        Category category = new Category(nom);
+        return category;
+    }
+
+    private Role chooseRole() {
+        Role role = Role.USER;
+        System.out.println("Choisir un Role");
+        System.out.println("1 :  Admin");
+        System.out.println("2 :  User");
+        int option = scanner.nextInt();
+        switch (option) {
+            case 1:
+                role = Role.ADMIN;
+                break;
+            default:
+                role = Role.USER;
+        }
+        return role;
+
+    }
+
+    private Task createTaskFromInput(List<User> users, List<Category> categories) {
+        getUserId(users);
+        //TODO Get USER BY ID
+        User user = null;
+        if (user == null) {
+            System.out.println("utilisateur n exist pas");
+            return null;
+        }
+        System.out.print("Choisir une catégorie par identifiant :");
+        displayCatigory(categories);
+        String categoryId = scanner.nextLine();
+        //TODO GET CATEGORY BY ID
+        Category category = null;
+        if (category == null) {
+            System.out.println("category n exist pas");
+            return null;
+        }
+        System.out.print("insérer le titre de la tâche :");
+        String title = scanner.nextLine();
+        System.out.print("Insérer la description");
+        String description = scanner.nextLine();
+        Priority priority = choosePriority();
+        //TODO CREATE TASK;
+        return new Task(title, description, Timestamp.valueOf(LocalDateTime.now()), category, priority, user.getId());
+    }
+
+    private String getUserId(List<User> users) {
+        System.out.println("\t choisire un  utilisateurs a prtir la list:");
+        //TODO display list
+        displayUser(users);
+        System.out.print("Choisir un utilisateur par identifiant id :");
+        String id = scanner.nextLine();
+        return id;
+    }
+
+
+    private User updateUSer(List<User> users){
+        String id =getUserId(users);
+       //TODO Get USER BY ID
+       User user = null;
+       if (user == null) {
+           System.out.println("utilisateur n exist pas");
+           return null;
+       }
+       User user1 = createUserFromInput();
+       //TODO cal repository update send id and user1
+       return user1;
+
+   }
+   private Task updateTask(List<Task> tasks){
+        displayTasks(tasks);
+       System.out.print("Sélectionner un identifiant : ");
+       String id = scanner.nextLine();
+       //TODO get task by id
+       Task task = null;
+       if(task == null){
+           System.out.println("Task introuvable");
+           return null;
+       }
+       //TODO get List users and task
+      Task updatedTask = createTaskFromInput(new ArrayList<>(),new ArrayList<>());
+       //TODO cal update task send task.taskid and updated task
+       return  updatedTask;
+
+
+   }
+
+    private void displayUser(List<User> users) {
+        users.stream().forEach(System.out::println);
+    }
+
+    private void displayCatigory(List<Category> categories) {
+        categories.stream().forEach(System.out::println);
+    }
+    private void displayTasks(List<Task> tasks) {
+        tasks.stream().forEach(System.out::println);
+    }
+    private void displayHistory(List<TaskHistoryAction> taskHistoryActionList) {
+        taskHistoryActionList.stream().forEach(System.out::println);
+    }
+    private Priority choosePriority() {
+        System.out.println("Sélectionner la priorité : ");
+        System.out.println("1 Haute");
+        System.out.println("2 Moyenne");
+        System.out.println("3 Basse");
+        int option = scanner.nextInt();
+        switch (option) {
+            case 1:
+                return Priority.HAUTE;
+            case 2:
+                return Priority.MOYENNE;
+        }
+
+        return Priority.BASSE;
     }
 }
 
