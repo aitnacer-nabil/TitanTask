@@ -62,3 +62,19 @@
         ) {
             taskDAOImp.addTask(task);
         }
+        -----------------------------------------
+         UserDaoImpl userDao =new UserDaoImpl();
+                CategoryDAOImp categoryDAOImp = new CategoryDAOImp();
+                TaskDAOImp taskDAOImp = new TaskDAOImp();
+                for (User user: userDao.getAllUsers()
+                     ) {
+                    System.out.println(user);
+                }
+                for (Category category: categoryDAOImp.getAllCategory()
+                ) {
+                    System.out.println(category);
+                }
+                for (Task task: taskDAOImp.getAllTasks()
+                ) {
+                    System.out.println(task);
+                }

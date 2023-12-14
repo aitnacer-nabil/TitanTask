@@ -5,11 +5,11 @@ use gestion;
 create table if not exists user
 (
     id            int primary key AUTO_INCREMENT,
-    user_id       varchar(55),
-    user_name     varchar(55),
-    user_email    varchar(55),
+    user_id       varchar(55) not null unique ,
+    user_name     varchar(55) not null,
+    user_email    varchar(55) not null,
     user_role     ENUM ('ADMIN','USER'),
-    user_password varchar(255)
+    user_password varchar(255) not null
 );
 create table if not exists category
 (
@@ -20,10 +20,10 @@ create table if not exists category
 create table if not exists task
 (
     id            int primary key AUTO_INCREMENT,
-    task_id       varchar(55),
-    name          varchar(55),
-    description   TEXT,
-    date_creation TIMESTAMP,
+    task_id       varchar(55) not null unique ,
+    name          varchar(55) not null,
+    description   TEXT not null,
+    date_creation TIMESTAMP not null,
     priority      ENUM ('haute','basse','moyenne'),
     ref_category  varchar(55) references category (id_category) ,
     ref_user      varchar(55) references user (user_id)
@@ -32,10 +32,10 @@ create table if not exists task
 create table if not exists task_action_history
 (
     id                int primary key AUTO_INCREMENT,
-    history_id varchar(55),
-    task_id           varchar(55),
+    history_id varchar(55) not null unique ,
+    task_id           varchar(55) not null unique ,
     action_change     enum ('CREATE','UPDATE','DELETE'),
-    time_modification TIMESTAMP,
+    time_modification TIMESTAMP not null ,
     user_id         varchar(55) references user (user_id)
 
 );
@@ -75,3 +75,4 @@ INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `pr
 SELECT * FROM task LEFT JOIN category ON task.ref_category = category.id_category;
 UPDATE category SET name_category='HEllo' WHERE id_category='ae18c';
 INSERT INTO user (user_id, user_name, user_email, user_role, user_password) VALUES ('cad37', 'Ahmed', 'ahmed@example.com', 'ADMIN', 'password1')
+SELECT * from task LEFT JOIN category ON task.ref_category = category.id_category where task_id ='0b925'

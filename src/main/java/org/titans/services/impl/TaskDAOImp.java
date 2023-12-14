@@ -152,6 +152,27 @@ public class TaskDAOImp implements TaskDAO {
         return taskList;
     }
 
+    @Override
+    public Task getTaskById(String id) {
+        Task task = null;
+
+        try {
+            String query = "SELECT task.*, category.* FROM task LEFT JOIN category ON task.ref_category = category.id_category WHERE task_id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1,id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                 task = generateTaskFromResultSet(resultSet);
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return task;
+    }
+
 //    @Override
 //    public List<Task> sortByDate() {
 //

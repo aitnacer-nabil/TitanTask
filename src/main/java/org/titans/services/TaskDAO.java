@@ -11,6 +11,7 @@ public interface TaskDAO {
     Task updateTask(Task t);
     void deleteTask(String id ,String userId);
     List<Task> getAllTasks();
+    Task getTaskById(String id);
 //    List<Task> sortByDate();
 //
 //    List<Task> sortByPriority();
