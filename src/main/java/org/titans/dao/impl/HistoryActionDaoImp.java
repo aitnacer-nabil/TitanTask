@@ -64,6 +64,12 @@ public class HistoryActionDaoImp implements HistoryActionDao {
         }
         return taskHistoryActions;
     }
+
+    @Override
+    public boolean deleteHistory() {
+        return false;
+    }
+
     public TaskHistoryAction createTaskHiistoryObj(String taskId, ActionType actionType,Timestamp timestamp, String userName) {
         return new TaskHistoryAction(taskId,actionType,timestamp,userName);
     }

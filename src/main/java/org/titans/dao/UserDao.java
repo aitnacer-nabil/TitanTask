@@ -6,14 +6,14 @@ import org.titans.entities.User;
 import java.util.List;
 
 public interface UserDao {
-    void createUser(User user);
+    int createUser(User user);
 
     User getUserById(String userId);
 
     List<User> getAllUsers();
 
-    void updateUser(String id ,User user);
+    int updateUser(String id ,User user);
 
-    void deleteUser(String userId);
+    int deleteUser(String userId);
 
 }
