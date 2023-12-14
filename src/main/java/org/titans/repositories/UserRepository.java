@@ -8,30 +8,49 @@ import java.util.List;
 
 public class UserRepository {
     UserDaoImpl userDAOImpl = new UserDaoImpl();
+    List<User> listUsers;
 
     public UserRepository() {
         this.listUsers = userDAOImpl.getAllUsers();
     }
 
-    List<User> listUsers ;
+    public void createUser(User user) {
 
-    void createUser(User user){
-        userDAOImpl.createUser(user);
+        if(userDAOImpl.createUser(user) == 1){
+            listUsers.add(user);
+        };
     }
 
-    User getUserById(String userId){
-        User user = new User();
-        return user;}
+    public User getUserById(String userId) {
+        if (listUsers.isEmpty()) {
+            listUsers = userDAOImpl.getAllUsers();
+        }
+        return listUsers.stream()
+                .filter(user -> user.getId().equals(userId))
+                .findFirst()
+                .get();
 
-    List<User> getAllUsers(){
-        return listUsers;}
-
-    void updateUser(String id ,User user){
-        userDAOImpl.updateUser(id,user);
     }
 
-    void deleteUser(String userId){
-        userDAOImpl.deleteUser(userId);
-        listUsers.stream().filter(user -> user.getId().equals(userId)).findFirst().ifPresent(listUsers::remove);
+    public List<User> getAllUsers() {
+        return listUsers;
+    }
+
+    public void updateUser(String id, User user) throws Exception {
+        if (userDAOImpl.updateUser(id, user) == 1) {
+            listUsers.stream()
+                    .filter(u -> u.getId().equals(id))
+                    .findFirst()
+                    .map(user1 -> {
+                        return user;
+                    }).orElseThrow(Exception::new);
+        }
+        ;
+    }
+
+    public void deleteUser(String userId) {
+        if (userDAOImpl.deleteUser(userId) == 1) {
+            listUsers.stream().filter(user -> user.getId().equals(userId)).findFirst().ifPresent(listUsers::remove);
+        }
     }
 }

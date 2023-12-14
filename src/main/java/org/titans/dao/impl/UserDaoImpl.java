@@ -10,43 +10,45 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
-Connection connection;
+    Connection connection;
 
     public UserDaoImpl() {
         connection = ConnectionDB.getConnectionDB();
     }
 
     @Override
-    public void createUser(User user) {
-
+    public int createUser(User user) {
+        int i = 0;
         try (
 
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "INSERT INTO user (user_id, user_name, user_email, user_role, user_password) VALUES (?, ?, ?, ?, ?)"
-             )) {
+                PreparedStatement preparedStatement = connection.prepareStatement(
+                        "INSERT INTO user (user_id, user_name, user_email, user_role, user_password) VALUES (?, ?, ?, ?, ?)"
+                )) {
             preparedStatement.setString(1, user.getId());
             preparedStatement.setString(2, user.getUsername());
             preparedStatement.setString(3, user.getEmail());
             preparedStatement.setString(4, user.getRole().name());
             preparedStatement.setString(5, user.getPassword());
 
-           int i = preparedStatement.executeUpdate();
-           if(i == 1){
-               System.out.println("User Successfully Added");
-           } else {
-               System.out.println("User Not Added");
-           }
+             i = preparedStatement.executeUpdate();
+            if (i == 1) {
+                System.out.println("User Successfully Added");
+                return i;
+            } else {
+                System.out.println("User Not Added");
+            }
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+        return i;
     }
 
     @Override
     public User getUserById(String userId) {
         try (
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "SELECT * FROM user WHERE user_id = ?"
-             )) {
+                PreparedStatement preparedStatement = connection.prepareStatement(
+                        "SELECT * FROM user WHERE user_id = ?"
+                )) {
             preparedStatement.setString(1, userId);
 
             try (ResultSet resultSet = preparedStatement.executeQuery()) {
@@ -64,8 +66,8 @@ Connection connection;
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
         try (
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery("SELECT * FROM user")) {
+                Statement statement = connection.createStatement();
+                ResultSet resultSet = statement.executeQuery("SELECT * FROM user")) {
 
             while (resultSet.next()) {
                 User user = extractUserFromResultSet(resultSet);
@@ -80,18 +82,19 @@ Connection connection;
     }
 
     @Override
-    public void updateUser(String id,  User user) {
+    public int updateUser(String id, User user) {
+        int result = 0;
         try (
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "UPDATE user SET user_name = ?, user_email = ?, user_role = ?, user_password = ? WHERE user_id = ?"
-             )) {
+                PreparedStatement preparedStatement = connection.prepareStatement(
+                        "UPDATE user SET user_name = ?, user_email = ?, user_role = ?, user_password = ? WHERE user_id = ?"
+                )) {
             preparedStatement.setString(1, user.getUsername());
             preparedStatement.setString(2, user.getEmail());
             preparedStatement.setString(3, user.getRole().name());
             preparedStatement.setString(4, user.getPassword());
             preparedStatement.setString(5, id);
-
-            if(preparedStatement.executeUpdate() == 1 ){
+            result = preparedStatement.executeUpdate();
+            if (result == 1) {
                 System.out.println("User Updated");
             } else {
                 System.out.println("User Not Updated");
@@ -99,28 +102,28 @@ Connection connection;
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return result;
     }
 
     @Override
-    public void deleteUser(String userId) {
+    public int deleteUser(String userId) {
+        int result = 0;
         try (
-             PreparedStatement preparedStatement = connection.prepareStatement(
-                     "DELETE FROM user WHERE user_id = ?"
-             )) {
+                PreparedStatement preparedStatement = connection.prepareStatement(
+                        "DELETE FROM user WHERE user_id = ?"
+                )) {
             preparedStatement.setString(1, userId);
-
-            if(preparedStatement.executeUpdate() == 1 ){
+            result = preparedStatement.executeUpdate();
+            if ( result ==1 ){
                 System.out.println("User Deleted");
-            } else {
+            } else{
                 System.out.println("User Not Deleted");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return result;
     }
-
-
-
 
 
     private User extractUserFromResultSet(ResultSet resultSet) throws SQLException {
