@@ -129,4 +129,24 @@ return  false;
 return false;
     }
 
+    @Override
+    public Category getCategoryById(String id) {
+        try {
+            String query = "select * from category where id_category = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                Category category = new Category(resultSet.getString("id_category"),resultSet.getString("name_category"));
+                return category;
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
+    }
+
 }

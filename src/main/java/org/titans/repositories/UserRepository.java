@@ -30,9 +30,20 @@ public class UserRepository {
                 .filter(user -> user.getId().equals(userId))
                 .findFirst()
                 .get();
+        //TODO handle not fund exption
 
     }
 
+    public User getUserByEmail(String email) {
+        if (listUsers.isEmpty()) {
+            listUsers = userDAOImpl.getAllUsers();
+        }
+        return listUsers.stream()
+                .filter(user -> user.getEmail().equals(email))
+                .findFirst()
+                .get();
+
+    }
     public List<User> getAllUsers() {
         return listUsers;
     }

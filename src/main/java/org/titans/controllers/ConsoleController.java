@@ -2,7 +2,12 @@ package org.titans.controllers;
 
 import org.titans.entities.*;
 import org.titans.dao.impl.TaskDAOImp;
+import org.titans.repositories.CategoryRepository;
+import org.titans.repositories.HistoriqueRepository;
+import org.titans.repositories.TaskRepository;
+import org.titans.repositories.UserRepository;
 
+import java.security.cert.CRL;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -12,30 +17,38 @@ import java.util.List;
 
 public class ConsoleController {
     Scanner scanner;
+    UserLogin userLogin = new UserLogin();
+    TaskRepository taskRepository = new TaskRepository();
+    HistoriqueRepository historiqueRepository = new HistoriqueRepository();
+    CategoryRepository categoryRepository = new CategoryRepository();
+    UserRepository userRepository = new UserRepository();
 
 
     public ConsoleController() {
         scanner = new Scanner(System.in);
     }
 
-    public void LoginMenu() {
+    public void LoginMenu() throws Exception {
         System.out.println("========================================");
         System.out.println("Gestion des Tâches ");
         System.out.println("Login : ");
         System.out.print("Entrer  email : ");
-        String email = scanner.nextLine();
+        String email = scanner.nextLine().trim();
         System.out.print("Entrer  password : ");
-        String password = scanner.next();
+        String password = scanner.next().trim();
         System.out.println("========================================");
-        //TODO call login method
-        User testUSer = new User("YouDa", "sara@example.com", "admin_password", Role.USER);
-        if (testUSer == null) {
-            //TODO display message error
+
+        User user = userLogin.Login(email,password);
+        if (user == null) {
+
+            System.out.println("Error email or password not correct");
+            LoginMenu();
+            return;
         }
-        if (testUSer.getRole() == Role.ADMIN) {
-            displayMenuAdmin(testUSer);
+        if (user.getRole() == Role.ADMIN) {
+            displayMenuAdmin(user);
         } else {
-            displayMenuUser(testUSer);
+            displayMenuUser(user);
         }
     }
 
@@ -70,12 +83,12 @@ public class ConsoleController {
     private void displayTasksByUserId(String id) {
         System.out.println("La liste des Tasks");
 
-        //TODO getlist of task By user
-        displayTasks(new ArrayList<>());
+
+        displayTasks(taskRepository.getTaskByUserIdRepo(id));
 
     }
 
-    private void displayMenuAdmin(User user) {
+    private void displayMenuAdmin(User user) throws Exception {
         System.out.println("Admin : " + user.getUsername());
         option:
         while (true) {
@@ -93,57 +106,57 @@ public class ConsoleController {
             System.out.println("12. Exporter vers un fichier JSON");
 
             int option = scanner.nextInt();
+            scanner.nextLine();
             switch (option) {
                 case 1:
                     User user1 = createUserFromInput();
-                    //TODO ajoute user to list and db
+                    userRepository.createUser(user1);
+
                     break;
                 case 2:
-                    createCategoryFromInput();
-                    //TODO category to list and db
+                    Category category = createCategoryFromInput();
+                    categoryRepository.addCategoryRep(category);
+
                     break;
                 case 3:
-                    //TODO list of category and users
-                    createTaskFromInput(new ArrayList<>(),new ArrayList<>());
+                    List<User> users = userRepository.getAllUsers();
+                    List<Category> categories = categoryRepository.getCategoryList();
+                    //TODO Hide user password and role
+                    //TODO category chould get category id from database
+                    createTaskFromInput(users,categories);
+
                     break;
                 case 4:
                     // Afficher la liste des utilisateurs
-                    //TODO ajoute list users
-                    displayUser(new ArrayList<>());
+
+                    displayUser(userRepository.getAllUsers());
                     break ;
                 case 5 :
-                    //TODO ajoute category list
-                    displayCatigory(new ArrayList<>());
+
+                    displayCatigory(categoryRepository.getCategoryList());
                     break;
                 case 6 :
-                    //TODO ajoute list tasks
-                    displayTasks(new ArrayList<>());
+
+                    displayTasks(taskRepository.getTasksList());
                     break ;
                 case 7:
-                    //TODO ajout list of historique
-                    displayHistory(new ArrayList<>());
+
+                    displayHistory(historiqueRepository.getHistoryList());
                     break ;
                 case 8:
-                    //TODO get list of user
-                    updateUSer(new ArrayList<>());
+
+                    updateUSer(userRepository.getAllUsers());
+
                     break ;
                 case 9:
-                    //TODO get list of task
-                    updateTask(new ArrayList<>());
+
+                    updateTask(taskRepository.getTasksList());
+
                     break;
                 case 10:
-                    //TODO get list of tasks;
-                    deleteTask();
+
+                    deleteTask(user);
                 case 11:
-
-
-
-
-
-
-
-
-
 
 
             }
@@ -152,13 +165,13 @@ public class ConsoleController {
 
     }
 
-    private void deleteTask() {
-        displayTasks(new ArrayList<>());
+    private void deleteTask(User user) {
+        displayTasks(taskRepository.getTasksList());
         System.out.print("Sélectionner un identifiant : ");
         String id = scanner.nextLine();
+        taskRepository.deleteTaskRepo(id,user.getId());
 
 
-        //TODO get delete method and send the id
 
 
     }
@@ -182,8 +195,8 @@ public class ConsoleController {
     }
 
     private Category createCategoryFromInput() {
-
-        System.out.println("\t- Saisir le nom de la catégorie");
+        System.out.println();
+        System.out.print("\t- Saisir le nom de la catégorie");
         String nom = scanner.nextLine();
         Category category = new Category(nom);
         return category;
@@ -207,9 +220,9 @@ public class ConsoleController {
     }
 
     private Task createTaskFromInput(List<User> users, List<Category> categories) {
-        getUserId(users);
-        //TODO Get USER BY ID
-        User user = null;
+        String id = getUserId(users);
+
+        User user = userRepository.getUserById(id);
         if (user == null) {
             System.out.println("utilisateur n exist pas");
             return null;
@@ -217,8 +230,8 @@ public class ConsoleController {
         System.out.print("Choisir une catégorie par identifiant :");
         displayCatigory(categories);
         String categoryId = scanner.nextLine();
-        //TODO GET CATEGORY BY ID
-        Category category = null;
+
+        Category category = categoryRepository.getCategoryBy(categoryId);
         if (category == null) {
             System.out.println("category n exist pas");
             return null;
@@ -228,8 +241,10 @@ public class ConsoleController {
         System.out.print("Insérer la description");
         String description = scanner.nextLine();
         Priority priority = choosePriority();
-        //TODO CREATE TASK;
-        return new Task(title, description, Timestamp.valueOf(LocalDateTime.now()), category, priority, user.getId());
+        Task task = new Task(title, description, Timestamp.valueOf(LocalDateTime.now()), category, priority, user.getId());
+          taskRepository.addTaskRepo(task);
+          return task;
+
     }
 
     private String getUserId(List<User> users) {
@@ -242,32 +257,30 @@ public class ConsoleController {
     }
 
 
-    private User updateUSer(List<User> users){
+    private User updateUSer(List<User> users) throws Exception {
         String id =getUserId(users);
-       //TODO Get USER BY ID
-       User user = null;
+
+       User user = userRepository.getUserById(id);
        if (user == null) {
            System.out.println("utilisateur n exist pas");
            return null;
        }
        User user1 = createUserFromInput();
-       //TODO cal repository update send id and user1
+        userRepository.updateUser(id,user1);
        return user1;
 
    }
-   private Task updateTask(List<Task> tasks){
+   private Task updateTask(List<Task> tasks) throws Exception {
         displayTasks(tasks);
        System.out.print("Sélectionner un identifiant : ");
        String id = scanner.nextLine();
-       //TODO get task by id
-       Task task = null;
+       Task task = taskRepository.getTaskById(id);
        if(task == null){
            System.out.println("Task introuvable");
            return null;
        }
-       //TODO get List users and task
-      Task updatedTask = createTaskFromInput(new ArrayList<>(),new ArrayList<>());
-       //TODO cal update task send task.taskid and updated task
+      Task updatedTask = createTaskFromInput(userRepository.getAllUsers(),categoryRepository.getCategoryList());
+       taskRepository.updateTaskRepo(id,updatedTask);
        return  updatedTask;
 
 

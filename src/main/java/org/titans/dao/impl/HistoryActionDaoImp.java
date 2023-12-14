@@ -37,6 +37,7 @@ public class HistoryActionDaoImp implements HistoryActionDao {
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+            //TODO java.sql.SQLIntegrityConstraintViolationException: Duplicate entry '157ae' for key 'task_action_history.task_id'
         }
 
     }
@@ -45,7 +46,7 @@ public class HistoryActionDaoImp implements HistoryActionDao {
     public List<TaskHistoryAction> getHistory() {
         List<TaskHistoryAction> taskHistoryActions = new ArrayList<>();
         try {
-            String query = "SELECT * FROM task_action_history w";
+            String query = "SELECT history_id, task_id, action_change, time_modification, user.user_id,user.user_name FROM task_action_history LEFT JOIN user ON task_action_history.user_id = user.user_id;";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(query);
             while (resultSet.next()) {
@@ -54,7 +55,7 @@ public class HistoryActionDaoImp implements HistoryActionDao {
                 resultSet.getString("task_id"),
                 ActionType.valueOf(resultSet.getString("action_change")),
                 resultSet.getTimestamp("time_modification"),
-                resultSet.getString(""));
+                resultSet.getString("user_id"));
                 taskHistoryActions.add(taskHistoryAction);
             }
 

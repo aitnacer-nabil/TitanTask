@@ -195,6 +195,7 @@ public class TaskDAOImp implements TaskDAO {
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
+            //TODO java.sql.SQLException: Column 'name_category' not found.
         }
         return tasksList;
     }
