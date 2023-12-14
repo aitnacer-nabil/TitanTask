@@ -1,7 +1,5 @@
-package org.titans.services;
+package org.titans.dao;
 
-import org.titans.entities.Category;
-import org.titans.entities.Priority;
 import org.titans.entities.Task;
 
 import java.util.List;

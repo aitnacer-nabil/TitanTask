@@ -2,10 +2,8 @@ package org.titans.controllers;
 
 import org.titans.entities.Priority;
 import org.titans.entities.Task;
-import org.titans.services.impl.TaskDAOImp;
+import org.titans.dao.impl.TaskDAOImp;
 
-import java.sql.Timestamp;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.List;

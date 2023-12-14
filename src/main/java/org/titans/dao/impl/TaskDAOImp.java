@@ -1,11 +1,11 @@
-package org.titans.services.impl;
+package org.titans.dao.impl;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.titans.entities.*;
-import org.titans.services.TaskDAO;
+import org.titans.dao.TaskDAO;
 import org.titans.util.ConnectionDB;
 
 import java.sql.*;

@@ -1,15 +1,13 @@
-package org.titans.services.impl;
+package org.titans.dao.impl;
 
 import org.titans.entities.*;
-import org.titans.services.UserDao;
+import org.titans.dao.UserDao;
 import org.titans.util.ConnectionDB;
 
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.mysql.cj.conf.PropertyKey.PASSWORD;
 
 public class UserDaoImpl implements UserDao {
 Connection connection;

@@ -1,8 +1,8 @@
-package org.titans.services.impl;
+package org.titans.dao.impl;
 
 import org.titans.entities.ActionType;
 import org.titans.entities.TaskHistoryAction;
-import org.titans.services.HistoryActionDao;
+import org.titans.dao.HistoryActionDao;
 import org.titans.util.ConnectionDB;
 
 import java.sql.*;
