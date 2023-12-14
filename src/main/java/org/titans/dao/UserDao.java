@@ -1,5 +1,6 @@
 package org.titans.dao;
 
+import org.titans.entities.Task;
 import org.titans.entities.User;
 
 import java.util.List;
@@ -14,4 +15,5 @@ public interface UserDao {
     void updateUser(String id ,User user);
 
     void deleteUser(String userId);
+
 }

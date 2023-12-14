@@ -21,6 +21,13 @@ public class Category {
         this.nom = nom;
         this.id = id;
     }
+    public Category( ) {
+
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getNom() {
         return nom;

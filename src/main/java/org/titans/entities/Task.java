@@ -43,6 +43,9 @@ public class Task {
         this.priority = priority;
         this.user_id = user_id;
     }
+    public Task() {
+
+    }
 
     public String getId() {
         return id;

@@ -119,6 +119,10 @@ Connection connection;
         }
     }
 
+
+
+
+
     private User extractUserFromResultSet(ResultSet resultSet) throws SQLException {
         String id = resultSet.getString("user_id");
         String username = resultSet.getString("user_name");
