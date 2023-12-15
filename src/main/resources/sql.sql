@@ -34,7 +34,7 @@ create table if not exists task_action_history
 (
     id                int primary key AUTO_INCREMENT,
     history_id varchar(55) not null unique ,
-    task_id           varchar(55) not null unique ,
+    task_id           varchar(55) not null  ,
     action_change     enum ('CREATE','UPDATE','DELETE'),
     time_modification TIMESTAMP not null ,
     user_id         varchar(55) references user (user_id)
@@ -78,3 +78,4 @@ UPDATE category SET name_category='HEllo' WHERE id_category='ae18c';
 INSERT INTO user (user_id, user_name, user_email, user_role, user_password) VALUES ('cad37', 'Ahmed', 'ahmed@example.com', 'ADMIN', 'password1');
 SELECT * from task LEFT JOIN category ON task.ref_category = category.id_category where task_id ='0b925';
 SELECT history_id, task_id, action_change, time_modification, user.user_id,user.user_name FROM task_action_history LEFT JOIN user ON task_action_history.user_id = user.user_id;
+select  user_id,user_name,user_email from user ;

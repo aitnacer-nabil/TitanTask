@@ -54,6 +54,7 @@ public class UserRepository {
                     .filter(i -> listUsers.get(i).getId().equals(id))
                     .findFirst()
                     .orElseThrow(Exception::new);
+            user.setId(id);
             listUsers.set(index,user);
         }
         ;

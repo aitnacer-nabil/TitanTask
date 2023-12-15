@@ -84,7 +84,12 @@ public class User {
       return role;
    }
 
+   public void setId(String id) {
+      this.id = id;
+   }
+
    public void setRole(Role role) {
       this.role = role;
    }
+
 }
