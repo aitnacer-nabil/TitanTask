@@ -77,4 +77,5 @@ SELECT * FROM task LEFT JOIN category ON task.ref_category = category.id_categor
 UPDATE category SET name_category='HEllo' WHERE id_category='ae18c';
 INSERT INTO user (user_id, user_name, user_email, user_role, user_password) VALUES ('cad37', 'Ahmed', 'ahmed@example.com', 'ADMIN', 'password1');
 SELECT * from task LEFT JOIN category ON task.ref_category = category.id_category where task_id ='0b925';
-SELECT history_id, task_id, action_change, time_modification, user.user_id,user.user_name FROM task_action_history LEFT JOIN user ON task_action_history.user_id = user.user_id;
+SELECT history_id, ta,sk_id, action_change,ref_category, time_modification user.user_name FROM task LEFT JOIN user ON task_action_history.user_id = user.user_id;
+SELECT task_id,name,description,date_creation,priority,ref_category,ref_user , category.name_category,user.user_name FROM task LEFT JOIN user ON task.ref_user = user.user_id join category on task.ref_category = category.id_category;

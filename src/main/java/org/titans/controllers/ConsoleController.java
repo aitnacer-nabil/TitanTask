@@ -5,6 +5,7 @@ import org.titans.repositories.CategoryRepository;
 import org.titans.repositories.HistoriqueRepository;
 import org.titans.repositories.TaskRepository;
 import org.titans.repositories.UserRepository;
+import org.titans.util.FileManager;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -21,8 +22,10 @@ public class ConsoleController {
     UserRepository userRepository = new UserRepository();
 
 
+
     public ConsoleController() {
         scanner = new Scanner(System.in);
+
     }
 
     public void LoginMenu() throws Exception {
@@ -154,7 +157,9 @@ public class ConsoleController {
                 case 10:
 
                     deleteTask(user);
-                case 11:
+                case 12:
+                    export();
+                    break ;
 
 
             }
@@ -325,6 +330,9 @@ public class ConsoleController {
         }
 
         return Priority.BASSE;
+    }
+    private void export(){
+        FileManager.saveToFileJson(taskRepository.getTasksList());
     }
 }
 

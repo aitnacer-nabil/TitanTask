@@ -12,6 +12,9 @@ public class Task {
     private Date dateCreation;
     private Category category;
     private Priority priority;
+    private String userName;
+
+
 
     public String getUser_id() {
         return user_id;
@@ -24,7 +27,15 @@ public class Task {
     private String user_id ;
 
 
-    public Task(String name, String description, Date dateCreation, Category category, Priority priority, String user_id) {
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public Task(String name, String description, Date dateCreation, Category category, Priority priority, String user_ide) {
        this.id = Utils.GenerateId();
         this.name = name;
         this.description = description;
@@ -32,9 +43,10 @@ public class Task {
         this.category = category;
         this.priority = priority;
         this.user_id = user_id;
+
     }
 
-    public Task(String id, String name, String description, Date dateCreation, Category category, Priority priority, String user_id) {
+    public Task(String id, String name, String description, Date dateCreation, Category category, Priority priority, String user_id,String userName) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -42,9 +54,25 @@ public class Task {
         this.category = category;
         this.priority = priority;
         this.user_id = user_id;
+        this.userName = userName;
     }
+
     public Task() {
 
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", dateCreation=" + dateCreation +
+                ", category=" + category +
+                ", priority=" + priority +
+                ", userName='" + userName + '\'' +
+                ", user_id='" + user_id + '\'' +
+                '}';
     }
 
     public String getId() {
@@ -95,16 +123,4 @@ public class Task {
         this.priority = priority;
     }
 
-    @Override
-    public String toString() {
-        return "Task{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", dateCreation=" + dateCreation +
-                ", category=" + category +
-                ", priority=" + priority +
-                ", user_id='" + user_id + '\'' +
-                '}';
-    }
 }
