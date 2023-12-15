@@ -52,6 +52,7 @@ public class ConsoleController {
         User user = userLogin.Login(email, password);
 
         if (user == null) {
+
             System.out.println("Error email or password not correct");
             scanner.next();
             LoginMenu();
