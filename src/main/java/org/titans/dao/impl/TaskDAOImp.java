@@ -182,7 +182,7 @@ public class TaskDAOImp implements TaskDAO {
         Task task = null;
 
         try {
-            String query = "SELECT * FROM task WHERE ref_user = ?";
+            String query = "SELECT task.*, category.* FROM task LEFT JOIN category ON task.ref_category = category.id_category WHERE ref_user = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
             preparedStatement.setString(1, userId);
             ResultSet resultSet = preparedStatement.executeQuery();
