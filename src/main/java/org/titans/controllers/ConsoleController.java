@@ -1,14 +1,25 @@
 package org.titans.controllers;
 
 import org.titans.entities.*;
+
+import org.titans.dao.impl.TaskDAOImp;
+
 import org.titans.repositories.CategoryRepository;
 import org.titans.repositories.HistoriqueRepository;
 import org.titans.repositories.TaskRepository;
 import org.titans.repositories.UserRepository;
 
+
+import java.security.cert.CRL;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Comparator;
+import java.util.ArrayList;
+
+import org.titans.util.FileManager;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import java.util.Scanner;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -32,25 +43,30 @@ public class ConsoleController {
         System.out.println("Gestion des Tâches ");
         System.out.println("Login : ");
         System.out.print("Entrer  email : ");
-        String email = scanner.next().trim();
+
+        String email = scanner.nextLine().trim();
+
         System.out.print("Entrer  password : ");
         String password = scanner.next().trim();
         System.out.println("========================================");
 
-        User user = userLogin.Login(email,password);
-        if (user == null
-        ) {
+        User user = userLogin.Login(email, password);
 
+        if (user == null) {
             System.out.println("Error email or password not correct");
+            scanner.next();
             LoginMenu();
-            return;
         }
+
         if (user.getRole() == Role.ADMIN) {
             displayMenuAdmin(user);
         } else {
             displayMenuUser(user);
         }
     }
+
+
+
 
     private void displayMenuUser(User user) {
         System.out.println("User : " + user.getUsername());
@@ -167,6 +183,7 @@ public class ConsoleController {
                     break ;
                 case 5 :
 
+
                     displayCategory(categoryRepository.getCategoryList());
                     break;
                 case 6 :
@@ -190,6 +207,7 @@ public class ConsoleController {
                 case 10:
 
                     deleteTask(user);
+
                 case 13:
 
                     displayTaskSortedByPriority();
@@ -204,6 +222,10 @@ public class ConsoleController {
                     displayTaskSortedByDate();
 
                     break;
+                case 11:
+                case 12:
+                    export();
+                    break ;
 
 
             }
@@ -264,8 +286,9 @@ public class ConsoleController {
     }
     private Category createCategoryFromInput() {
         System.out.println();
-        System.out.print("\t- Saisir le nom de la catégorie :  ");
-        String nom = scanner.next();
+        System.out.print("\t- Saisir le nom de la catégorie");
+        String nom = scanner.nextLine();
+
         Category category = new Category(nom);
         return category;
     }
@@ -288,44 +311,32 @@ public class ConsoleController {
     }
 
     private Task createTaskFromInput(List<User> users, List<Category> categories) {
-        while (true) {
-            String id = getUserId(users);
-            User user = userRepository.getUserById(id);
 
-            if (user == null) {
-                System.out.println("Utilisateur n'existe pas. Veuillez réessayer.");
-                continue;
-            }
+        String id = getUserId(users);
 
-
-            Category category;
-            do {
-                System.out.print("Choisir une catégorie par identifiant :");
-                displayCategory(categories);
-                String categoryId = scanner.next();
-                 category = categoryRepository.getCategoryBy(categoryId);
-                 if (category == null)
-                     System.out.println("Catégorie n'existe pas. Veuillez réessayer.");
-            }
-            while(category == null);
-
-
-
-
-
-
-            System.out.print("Insérez le titre de la tâche :");
-            String title = scanner.next();
-            System.out.print("Insérez la description :");
-            String description = scanner.next();
-
-            Priority priority = choosePriority();
-
-            Task task = new Task(title, description, Timestamp.valueOf(LocalDateTime.now()), category, priority, user.getId());
-            taskRepository.addTaskRepo(task);
-
-            return task;
+        User user = userRepository.getUserById(id);
+        if (user == null) {
+            System.out.println("utilisateur n exist pas");
+            return null;
         }
+        System.out.print("Choisir une catégorie par identifiant :");
+        displayCatigory(categories);
+        String categoryId = scanner.nextLine();
+
+        Category category = categoryRepository.getCategoryBy(categoryId);
+        if (category == null) {
+            System.out.println("category n exist pas");
+            return null;
+        }
+        System.out.print("insérer le titre de la tâche :");
+        String title = scanner.nextLine();
+        System.out.print("Insérer la description");
+        String description = scanner.nextLine();
+        Priority priority = choosePriority();
+        Task task = new Task(title, description, Timestamp.valueOf(LocalDateTime.now()), category, priority, user.getId());
+          taskRepository.addTaskRepo(task);
+          return task;
+
     }
 
 
@@ -372,6 +383,7 @@ public class ConsoleController {
         users.stream().forEach(System.out::println);
     }
 
+
     private void displayCategory(List<Category> categories) {
         categories.stream().forEach(System.out::println);
     }
@@ -395,6 +407,18 @@ public class ConsoleController {
         }
 
         return Priority.BASSE;
+
+    }
+    private void export(){
+        FileManager.saveToFileJson(taskRepository.getTasksList());
+        FileManager.saveToFileJsonCategory(categoryRepository.getCategoryList());
+        FileManager.saveToFileJsonHistory(historiqueRepository.getHistoryList());
+        FileManager.saveToFileJsonUser(userRepository.getAllUsers());
+
+
+    }
+    private void displayCatigory(List<Category> categories) {
+        categories.stream().forEach(System.out::println);
     }
 }
 

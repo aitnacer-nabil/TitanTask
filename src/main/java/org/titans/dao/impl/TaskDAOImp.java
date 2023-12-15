@@ -140,7 +140,7 @@ public class TaskDAOImp implements TaskDAO {
         List<Task> taskList = new ArrayList<>();
 
         try {
-            String getAllQuery = "SELECT * FROM task LEFT JOIN category ON task.ref_category = category.id_category";
+            String getAllQuery = "SELECT task_id,name,description,date_creation,priority,ref_category,ref_user , category.name_category,user.user_name FROM task LEFT JOIN user ON task.ref_user = user.user_id join category on task.ref_category = category.id_category";
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery(getAllQuery);
             while (resultSet.next()) {
@@ -232,7 +232,12 @@ public class TaskDAOImp implements TaskDAO {
         String taskUserId = resultSet.getString("ref_user");
         Category category = new Category(categoryRef, categoryName);
 
-        Task task = new Task(taskId, taskName, taskDesc, taskDate, category, taskPriority, taskUserId);
+
+
+        String user_name = resultSet.getString("user_name");
+
+        Task task = new Task(taskId, taskName, taskDesc, taskDate, category, taskPriority, taskUserId,user_name);
+
 
         return task;
     }
