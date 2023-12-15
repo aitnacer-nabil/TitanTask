@@ -22,6 +22,7 @@ import java.time.LocalDateTime;
 
 import java.util.Scanner;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 public class ConsoleController {
@@ -74,7 +75,9 @@ public class ConsoleController {
         while (true){
 
             System.out.println("1. Afficher toutes mes tasks");
-            System.out.println("2. Trier la liste ");
+            System.out.println("2. Trier la liste  par priorité");
+            System.out.println("3. Trier la liste  par catégorie");
+            System.out.println("4. Trier la liste  par date");
 
 
             int option = scanner.nextInt();
@@ -83,15 +86,43 @@ public class ConsoleController {
                     displayTasksByUserId(user.getId() );
                     break ;
                 case 2:
-                    sort();
-                    //TODO complete code
+                    sortPriority(user.getId());
+                    break;
+
+                case 3:
+                    sortCategory(user.getId());
+                    break;
+                case 4:
+                    sortDate(user.getId());
+                    break;
+
             }
 
         }
     }
 
-    private void sort() {
-        System.out.println("choisis ");
+    private void sortPriority(String id) {
+        System.out.println("Liste des taches triées par priorité  ");
+
+        displayTasks(taskRepository.sortPriorityUserRepo(id));
+
+
+
+
+    }
+    private void sortCategory(String id) {
+        System.out.println("Liste des taches triées par catégorie  ");
+
+        displayTasks(taskRepository.sortCategoryUserRepo(id));
+
+
+    }
+    private void sortDate(String id) {
+        System.out.println("Liste des taches triées par date  ");
+
+        displayTasks(taskRepository.sortDateUserRepo(id));
+
+
 
 
     }
@@ -120,6 +151,10 @@ public class ConsoleController {
             System.out.println("10. Supprimer une tâche");
             System.out.println("11. importer un fichier");
             System.out.println("12. Exporter vers un fichier JSON");
+            System.out.println("13. Tri la liste des taches par priorité");
+            System.out.println("14. Tri la liste des taches par catégorie");
+            System.out.println("15. Tri la liste des taches par date");
+
 
             int option = scanner.nextInt();
             scanner.nextLine();
@@ -173,6 +208,21 @@ public class ConsoleController {
                 case 10:
 
                     deleteTask(user);
+
+                case 13:
+
+                    displayTaskSortedByPriority();
+
+                    break;
+                case 14:
+
+                    displayTaskSortedByCategory();
+
+                    break;case 15:
+
+                    displayTaskSortedByDate();
+
+                    break;
                 case 11:
                 case 12:
                     export();
@@ -213,7 +263,28 @@ public class ConsoleController {
 
 
     }
+    private void displayTaskSortedByPriority() {
 
+
+       displayTasks(taskRepository.sortByPriorityRepo());
+
+
+    }
+    private void displayTaskSortedByDate() {
+
+
+        displayTasks(taskRepository.sortByDateRepo());
+
+
+    }
+    private void displayTaskSortedByCategory() {
+
+
+        displayTasks(taskRepository.sortByCategoryRepo());
+
+
+
+    }
     private Category createCategoryFromInput() {
         System.out.println();
         System.out.print("\t- Saisir le nom de la catégorie");

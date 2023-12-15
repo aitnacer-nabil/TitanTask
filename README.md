@@ -1,5 +1,5 @@
 
-#Application TitanTask
+### Application TaskManager
 
 ## Aperçu
 
@@ -9,9 +9,9 @@ TitanTask est une application conçue pour rationaliser la gestion des tâches e
 
 - Gestion des tâches : ajouter, mettre à jour, supprimer des tâches.
 - Catégories de tâches : attribuez des catégories et filtrez par catégorie.
-- Priorités des tâches : définissez les priorités et triez les tâches en conséquence.
+- Priorités des tâches : triez les taches par priorité.
 - Stockage de base de données : utilisez JDBC pour le stockage de bases de données relationnelles.
-- Historique des actions : suivez les actions telles que l'ajout de tâches et les mises à jour.
+- Historique des actions : consultez l'historique des taches.
 - Exporter/Importer : Enregistrez et chargez les listes de tâches au format CSV ou JSON.
 
 
