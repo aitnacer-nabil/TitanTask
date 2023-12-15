@@ -5,6 +5,8 @@ import org.titans.entities.User;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 public class UserRepository {
@@ -26,11 +28,13 @@ public class UserRepository {
         if (listUsers.isEmpty()) {
             listUsers = userDAOImpl.getAllUsers();
         }
-        return listUsers.stream()
+
+
+        Optional<User> userOptional=listUsers.stream()
                 .filter(user -> user.getId().equals(userId))
-                .findFirst()
-                .get();
-        //TODO handle not fund exption
+                .findFirst();
+                return userOptional.orElse(null);
+
 
     }
 
@@ -38,10 +42,13 @@ public class UserRepository {
         if (listUsers.isEmpty()) {
             listUsers = userDAOImpl.getAllUsers();
         }
-        return listUsers.stream()
+
+        Optional<User> userOptional = listUsers.stream()
                 .filter(user -> user.getEmail().equals(email))
-                .findFirst()
-                .get();
+                .findFirst();
+
+        return userOptional.orElse(null);
+
 
     }
     public List<User> getAllUsers() {
@@ -54,7 +61,9 @@ public class UserRepository {
                     .filter(i -> listUsers.get(i).getId().equals(id))
                     .findFirst()
                     .orElseThrow(Exception::new);
+
             user.setId(id);
+
             listUsers.set(index,user);
         }
         ;

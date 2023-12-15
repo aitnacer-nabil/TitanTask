@@ -11,7 +11,9 @@ import java.util.stream.IntStream;
 
 public class CategoryRepository {
     CategoryDAOImp categoryDAOImp = new CategoryDAOImp();
+
     List<Category> categoryList = new ArrayList<>();
+
 
     public CategoryRepository() {
         this.categoryList = categoryDAOImp.getAllCategory();

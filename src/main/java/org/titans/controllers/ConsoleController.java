@@ -1,16 +1,25 @@
 package org.titans.controllers;
 
 import org.titans.entities.*;
+
 import org.titans.dao.impl.TaskDAOImp;
+
 import org.titans.repositories.CategoryRepository;
 import org.titans.repositories.HistoriqueRepository;
 import org.titans.repositories.TaskRepository;
 import org.titans.repositories.UserRepository;
 
+
 import java.security.cert.CRL;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+
+import org.titans.util.FileManager;
+
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
+
 import java.util.Scanner;
 import java.util.List;
 
@@ -33,24 +42,30 @@ public class ConsoleController {
         System.out.println("Gestion des Tâches ");
         System.out.println("Login : ");
         System.out.print("Entrer  email : ");
+
         String email = scanner.nextLine().trim();
+
         System.out.print("Entrer  password : ");
         String password = scanner.next().trim();
         System.out.println("========================================");
 
-        User user = userLogin.Login(email,password);
-        if (user == null) {
+        User user = userLogin.Login(email, password);
 
+        if (user == null) {
             System.out.println("Error email or password not correct");
+            scanner.next();
             LoginMenu();
-            return;
         }
+
         if (user.getRole() == Role.ADMIN) {
             displayMenuAdmin(user);
         } else {
             displayMenuUser(user);
         }
     }
+
+
+
 
     private void displayMenuUser(User user) {
         System.out.println("User : " + user.getUsername());
@@ -133,7 +148,8 @@ public class ConsoleController {
                     break ;
                 case 5 :
 
-                    displayCatigory(categoryRepository.getCategoryList());
+
+                    displayCategory(categoryRepository.getCategoryList());
                     break;
                 case 6 :
 
@@ -157,6 +173,9 @@ public class ConsoleController {
 
                     deleteTask(user);
                 case 11:
+                case 12:
+                    export();
+                    break ;
 
 
             }
@@ -198,6 +217,7 @@ public class ConsoleController {
         System.out.println();
         System.out.print("\t- Saisir le nom de la catégorie");
         String nom = scanner.nextLine();
+
         Category category = new Category(nom);
         return category;
     }
@@ -220,6 +240,7 @@ public class ConsoleController {
     }
 
     private Task createTaskFromInput(List<User> users, List<Category> categories) {
+
         String id = getUserId(users);
 
         User user = userRepository.getUserById(id);
@@ -247,11 +268,12 @@ public class ConsoleController {
 
     }
 
+
     private String getUserId(List<User> users) {
-        System.out.println("\t choisire un  utilisateurs a prtir la list:");
+        System.out.println("\t choisissez un  utilisateur à partir de la liste :");
         //TODO display list
         displayUser(users);
-        System.out.print("Choisir un utilisateur par identifiant id :");
+        System.out.print("Entrez  id de l'utilsateur  :");
         String id = scanner.nextLine();
         return id;
     }
@@ -290,7 +312,8 @@ public class ConsoleController {
         users.stream().forEach(System.out::println);
     }
 
-    private void displayCatigory(List<Category> categories) {
+
+    private void displayCategory(List<Category> categories) {
         categories.stream().forEach(System.out::println);
     }
     private void displayTasks(List<Task> tasks) {
@@ -313,6 +336,18 @@ public class ConsoleController {
         }
 
         return Priority.BASSE;
+
+    }
+    private void export(){
+        FileManager.saveToFileJson(taskRepository.getTasksList());
+        FileManager.saveToFileJsonCategory(categoryRepository.getCategoryList());
+        FileManager.saveToFileJsonHistory(historiqueRepository.getHistoryList());
+        FileManager.saveToFileJsonUser(userRepository.getAllUsers());
+
+
+    }
+    private void displayCatigory(List<Category> categories) {
+        categories.stream().forEach(System.out::println);
     }
 }
 

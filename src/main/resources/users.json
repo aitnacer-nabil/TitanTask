@@ -1,0 +1,86 @@
+[
+  {
+    "id": "ce4bb",
+    "username": "hello",
+    "email": "helolo@fcail.com",
+    "password": "4234252",
+    "role": "ADMIN"
+  },
+  {
+    "id": "b298b",
+    "username": "Ahmed",
+    "email": "ahmed@example.com",
+    "password": "password1",
+    "role": "ADMIN"
+  },
+  {
+    "id": "d2c66",
+    "username": "Fatima",
+    "email": "fatima@example.com",
+    "password": "password2",
+    "role": "USER"
+  },
+  {
+    "id": "52e21",
+    "username": "Mehdi",
+    "email": "mehdi@example.com",
+    "password": "password3",
+    "role": "USER"
+  },
+  {
+    "id": "e32eb",
+    "username": "Amina",
+    "email": "amina@example.com",
+    "password": "password4",
+    "role": "USER"
+  },
+  {
+    "id": "fffd9",
+    "username": "Karim",
+    "email": "karim@example.com",
+    "password": "password5",
+    "role": "USER"
+  },
+  {
+    "id": "f6a18",
+    "username": "Nadia",
+    "email": "nadia@example.com",
+    "password": "password6",
+    "role": "USER"
+  },
+  {
+    "id": "5a5d6",
+    "username": "Hassan",
+    "email": "hassan@example.com",
+    "password": "password7",
+    "role": "USER"
+  },
+  {
+    "id": "7697f",
+    "username": "Sara",
+    "email": "sara@example.com",
+    "password": "admin_password",
+    "role": "ADMIN"
+  },
+  {
+    "id": "ac41d",
+    "username": "get",
+    "email": "get@get.com",
+    "password": "dsafdf",
+    "role": "USER"
+  },
+  {
+    "id": "db9e3",
+    "username": "yaus",
+    "email": "yas@sa.com",
+    "password": "eewewe",
+    "role": "USER"
+  },
+  {
+    "id": "a767e",
+    "username": "hi",
+    "email": "he@gmil.com",
+    "password": "2134123",
+    "role": "USER"
+  }
+]

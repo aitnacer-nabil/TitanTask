@@ -23,10 +23,25 @@ public class Category {
     }
     public Category( ) {
 
+
     }
 
     public void setId(String id) {
         this.id = id;
+    }
+
+
+
+
+
+
+    @Override
+    public String toString() {
+        return "Category{" +
+
+                "id='" + id + '\'' +
+                " , nom='" + nom + '\'' +
+                '}';
     }
 
     public String getNom() {
@@ -37,10 +52,5 @@ public class Category {
         this.nom = nom;
     }
 
-    @Override
-    public String toString() {
-        return "Category{" +
-                "nom='" + nom + '\'' +
-                '}';
-    }
+
 }

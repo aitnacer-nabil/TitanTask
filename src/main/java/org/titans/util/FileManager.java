@@ -35,7 +35,7 @@ public class FileManager {
     public static void saveToFileJsonCategory(List<Category> categories) {
 
         String jsonString = gson.toJson(categories);
-        String filePath = "src/main/resources/Tasks.json";
+        String filePath = "src/main/resources/categorie.json";
 
         try (FileWriter writer = new FileWriter(filePath)) {
             writer.write(jsonString);
@@ -47,7 +47,7 @@ public class FileManager {
     public static void saveToFileJsonUser(List<User> users) {
 
         String jsonString = gson.toJson(users);
-        String filePath = "src/main/resources/Tasks.json";
+        String filePath = "src/main/resources/users.json";
 
         try (FileWriter writer = new FileWriter(filePath)) {
             writer.write(jsonString);
@@ -59,7 +59,7 @@ public class FileManager {
     public static void saveToFileJsonHistory(List<TaskHistoryAction> historyActions) {
 
         String jsonString = gson.toJson(historyActions);
-        String filePath = "src/main/resources/Tasks.json";
+        String filePath = "src/main/resources/historyActions.json";
 
         try (FileWriter writer = new FileWriter(filePath)) {
             writer.write(jsonString);
@@ -71,8 +71,6 @@ public class FileManager {
     public static List<Task> loadFromJson() {
         List<Task> list = new ArrayList<>();
         try {
-
-
             InputStream inputStream = Resources.getResource("tasks.json").openStream();
             String json = IOUtils.toString(inputStream, StandardCharsets.UTF_8);
             Type listType = new TypeToken<ArrayList<Task>>() {
