@@ -1,11 +1,9 @@
 package org.titans.repositories;
 
-import org.titans.dao.TaskDAO;
 import org.titans.dao.impl.TaskDAOImp;
 import org.titans.entities.Priority;
 import org.titans.entities.Task;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -98,6 +96,30 @@ public class TaskRepository {
                 .filter(task -> task.getPriority().equals(priority))
                 .collect(Collectors.toList());
 
+    }
+    public List<Task> sortCategoryUserRepo(String id) {
+
+        List<Task> tasks = getTaskByUserIdRepo(id);
+        List<Task> sortedTasks = tasks.stream()
+                .sorted(Comparator.comparing(task -> task.getCategory().getNom()))
+                .collect(Collectors.toList());
+        return sortedTasks;
+    }
+    public List<Task> sortPriorityUserRepo(String id) {
+
+        List<Task> tasks = getTaskByUserIdRepo(id);
+        List<Task> sortedTasks = tasks.stream()
+                .sorted(Comparator.comparing(Task::getPriority))
+                .collect(Collectors.toList());
+        return sortedTasks;
+    }
+    public List<Task> sortDateUserRepo(String id) {
+
+        List<Task> tasks = getTaskByUserIdRepo(id);
+        List<Task> sortedTasks = tasks.stream()
+                .sorted(Comparator.comparing(Task::getDateCreation))
+                .collect(Collectors.toList());
+        return sortedTasks;
     }
 }
 
