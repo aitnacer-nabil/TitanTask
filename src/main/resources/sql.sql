@@ -24,6 +24,7 @@ create table if not exists task
     name          varchar(55) not null,
     description   TEXT not null,
     date_creation TIMESTAMP not null,
+
     priority      ENUM ('haute','basse','moyenne'),
     ref_category  varchar(55) references category (id_category) ,
     ref_user      varchar(55) references user (user_id)
@@ -74,5 +75,6 @@ INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `pr
 INSERT INTO `task` (`id`, `task_id`, `name`, `description`, `date_creation`, `priority`, `ref_category`, `ref_user`) VALUES (14, 'task14', 'Visit Doctor', 'Schedule and visit the doctor for a health checkup', '2023-12-13 21:44:46', 'haute', 'eceb1', 'user7');
 SELECT * FROM task LEFT JOIN category ON task.ref_category = category.id_category;
 UPDATE category SET name_category='HEllo' WHERE id_category='ae18c';
-INSERT INTO user (user_id, user_name, user_email, user_role, user_password) VALUES ('cad37', 'Ahmed', 'ahmed@example.com', 'ADMIN', 'password1')
-SELECT * from task LEFT JOIN category ON task.ref_category = category.id_category where task_id ='0b925'
+INSERT INTO user (user_id, user_name, user_email, user_role, user_password) VALUES ('cad37', 'Ahmed', 'ahmed@example.com', 'ADMIN', 'password1');
+SELECT * from task LEFT JOIN category ON task.ref_category = category.id_category where task_id ='0b925';
+SELECT history_id, task_id, action_change, time_modification, user.user_id,user.user_name FROM task_action_history LEFT JOIN user ON task_action_history.user_id = user.user_id;

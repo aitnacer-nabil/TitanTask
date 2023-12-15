@@ -18,7 +18,6 @@ public class TaskDAOImp implements TaskDAO {
     HistoryActionDaoImp historyActionDaoImp;
 
 
-
     Connection connection;
 
     public TaskDAOImp() {
@@ -27,7 +26,8 @@ public class TaskDAOImp implements TaskDAO {
     }
 
     @Override
-    public void addTask(Task task) {
+    public boolean addTask(Task task) {
+        boolean isAdded = false;
         try {
             String query = "INSERT INTO task (task_id, name,description,date_creation,priority,ref_category,ref_user) VALUES(?,?,?,?,?,?,?)";
 
@@ -53,6 +53,7 @@ public class TaskDAOImp implements TaskDAO {
 
 
                 System.out.println("Add successfully");
+                return true;
             } else {
                 System.out.println("Not Add successfully");
             }
@@ -60,13 +61,13 @@ public class TaskDAOImp implements TaskDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
+        return false;
     }
 
 
-
     @Override
-    public Task updateTask(Task task) {
+    public boolean updateTask(String taskId, Task task) {
+
         try {
 
             String query = "update task set  name = ? ,description = ? , date_creation = CURRENT_TIMESTAMP, priority = ?, ref_category = ? , ref_user = ? where  task_id = ?;";
@@ -76,7 +77,7 @@ public class TaskDAOImp implements TaskDAO {
             preparedStatement.setString(3, task.getPriority().name());
             preparedStatement.setString(4, task.getCategory().getId());
             preparedStatement.setString(5, task.getUser_id());
-            preparedStatement.setString(6, task.getId());
+            preparedStatement.setString(6, taskId);
 
             int i = preparedStatement.executeUpdate();
             if (i == 1) {
@@ -84,27 +85,27 @@ public class TaskDAOImp implements TaskDAO {
                         task.getId(),
                         ActionType.UPDATE,
                         Timestamp.valueOf(LocalDateTime.now()),
-                        task.getUser_id()
+                        taskId
                 );
                 historyActionDaoImp.insert(taskHistoryAction);
                 preparedStatement.close();
-                return task;
+                return true;
             }
 
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
+        return false;
     }
 
     @Override
-    public void deleteTask(String id,String userId) {
+    public boolean deleteTask(String id, String userId) {
 
         String deleteQuery = "DELETE FROM task WHERE task_id= ?";
         if (connection == null) {
             System.out.println("Couldn't get connection to the database");
-            return;
+            return false;
         }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
@@ -120,7 +121,9 @@ public class TaskDAOImp implements TaskDAO {
                         userId
                 );
                 historyActionDaoImp.insert(taskHistoryAction);
+
                 System.out.println("Task deleted successfully");
+                return true;
             } else {
                 System.out.println("Task not Found");
             }
@@ -129,7 +132,7 @@ public class TaskDAOImp implements TaskDAO {
             se.printStackTrace();
 
         }
-
+        return false;
     }
 
     @Override
@@ -159,11 +162,11 @@ public class TaskDAOImp implements TaskDAO {
         try {
             String query = "SELECT task.*, category.* FROM task LEFT JOIN category ON task.ref_category = category.id_category WHERE task_id = ?";
             PreparedStatement preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setString(1,id);
+            preparedStatement.setString(1, id);
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
 
-                 task = generateTaskFromResultSet(resultSet);
+                task = generateTaskFromResultSet(resultSet);
 
             }
 
@@ -171,6 +174,30 @@ public class TaskDAOImp implements TaskDAO {
             throw new RuntimeException(e);
         }
         return task;
+    }
+
+    @Override
+    public List<Task> getTaskByUserId(String userId) {
+        List<Task> tasksList = new ArrayList<>();
+        Task task = null;
+
+        try {
+            String query = "SELECT * FROM task WHERE ref_user = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                task = generateTaskFromResultSet(resultSet);
+                tasksList.add(task);
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+            //TODO java.sql.SQLException: Column 'name_category' not found.
+        }
+        return tasksList;
     }
 
 //    @Override
@@ -203,14 +230,15 @@ public class TaskDAOImp implements TaskDAO {
         String categoryName = resultSet.getString("name_category");
         String categoryRef = resultSet.getString("ref_category");
         String taskUserId = resultSet.getString("ref_user");
-        Category category = new Category(categoryRef,categoryName);
+        Category category = new Category(categoryRef, categoryName);
 
-        Task task = new Task(taskId,taskName,taskDesc,taskDate,category,taskPriority,taskUserId);
+        Task task = new Task(taskId, taskName, taskDesc, taskDate, category, taskPriority, taskUserId);
 
         return task;
     }
 
-   // @Override
+
+    // @Override
 
 //    public List<Task> sortByPriority() {
 //

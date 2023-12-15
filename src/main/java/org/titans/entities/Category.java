@@ -21,6 +21,22 @@ public class Category {
         this.nom = nom;
         this.id = id;
     }
+    public Category( ) {
+
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "Category{" +
+
+                "id='" + id + '\'' +
+                " , nom='" + nom + '\'' +
+                '}';
+    }
 
     public String getNom() {
         return nom;
@@ -30,10 +46,5 @@ public class Category {
         this.nom = nom;
     }
 
-    @Override
-    public String toString() {
-        return "Category{" +
-                "nom='" + nom + '\'' +
-                '}';
-    }
+
 }

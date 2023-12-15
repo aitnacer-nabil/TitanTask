@@ -52,7 +52,7 @@ public class CategoryDAOImp implements CategoryDAO {
     }
 
     @Override
-    public void addCategory(Category category) {
+    public boolean addCategory(Category category) {
 
 
         String sqlInsertt = "INSERT INTO category (id_category, name_category) values (?,?)";
@@ -62,6 +62,7 @@ public class CategoryDAOImp implements CategoryDAO {
             int i = preparedStatement.executeUpdate();
             if (i == 1) {
                 System.out.println("category added successfully");
+                return true;
             } else {
                 System.out.println("Error ");
             }
@@ -69,14 +70,14 @@ public class CategoryDAOImp implements CategoryDAO {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
+return  false;
 
     }
 
 
 
     @Override
-    public Category updateCategory(String id ,Category category) {
+    public boolean updateCategory(String id ,Category category) {
 
 
 
@@ -90,22 +91,22 @@ public class CategoryDAOImp implements CategoryDAO {
             int i = preparedStatement.executeUpdate();
             if (i == 1) {
                 System.out.println("category updated successfully");
-                return category;
+                return true;
             }
             preparedStatement.close();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return null;
+        return false;
     }
 
     @Override
-    public void deleteCategory(String id) {
+    public boolean deleteCategory(String id) {
         String deleteQuery = "DELETE FROM category WHERE id_category=?";
         if (connection == null) {
             System.out.println("Couldn't get connection to the database");
-            return;
+            return false;
         }
 
         try (PreparedStatement preparedStatement = connection.prepareStatement(deleteQuery)) {
@@ -115,6 +116,7 @@ public class CategoryDAOImp implements CategoryDAO {
 
             if (rowAffected == 1) {
                 System.out.println("Category deleted successfully");
+                return true;
             } else {
                 System.out.println("Category not Found");
             }
@@ -124,7 +126,27 @@ public class CategoryDAOImp implements CategoryDAO {
 
         }
 
+return false;
+    }
 
+    @Override
+    public Category getCategoryById(String id) {
+        try {
+            String query = "select * from category where id_category = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setString(1, id);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            while (resultSet.next()) {
+
+                Category category = new Category(resultSet.getString("id_category"),resultSet.getString("name_category"));
+                return category;
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return null;
     }
 
 }

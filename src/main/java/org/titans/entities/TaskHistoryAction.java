@@ -65,4 +65,15 @@ public class TaskHistoryAction {
     public void setUser_id(String user_id) {
         this.user_id = user_id;
     }
+
+    @Override
+    public String toString() {
+        return "TaskHistoryAction{" +
+                "history_id='" + history_id + '\'' +
+                ", task_id='" + task_id + '\'' +
+                ", actionType=" + actionType +
+                ", timeModification=" + timeModification +
+                ", user_id='" + user_id + '\'' +
+                '}';
+    }
 }

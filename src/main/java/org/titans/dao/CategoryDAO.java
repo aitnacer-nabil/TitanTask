@@ -14,9 +14,12 @@ import org.titans.entities.Category;
 public interface CategoryDAO {
     
     List<Category> getAllCategory();
-    void addCategory(Category category);
-    Category updateCategory(String id,Category category );
-    void deleteCategory(String id);
+    boolean addCategory(Category category);
+    boolean updateCategory(String id,Category category );
+    boolean deleteCategory(String id);
+    Category getCategoryById(String id);
+
+
 
     
 }
